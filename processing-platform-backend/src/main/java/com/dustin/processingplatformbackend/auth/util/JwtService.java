@@ -26,15 +26,13 @@ public class JwtService {
     }
     
     public String generateAccessToken(User user) {
-        String jwt = Jwts.builder()
+        return Jwts.builder()
             .subject(user.getId().toString())
             .claim("email", user.getEmail())
             .issuedAt(new Date())
             .expiration(Date.from(Instant.now().plus(7, ChronoUnit.DAYS)))
             .signWith(getSecretKey())
             .compact();
-
-        return jwt;
     }
 
 }
