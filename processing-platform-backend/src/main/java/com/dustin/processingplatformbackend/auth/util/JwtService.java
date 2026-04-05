@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.dustin.processingplatformbackend.auth.model.User;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -35,4 +37,20 @@ public class JwtService {
             .compact();
     }
 
+
+    public UUID validateToken(String token) {
+
+        try {
+            return UUID.fromString(
+                Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject()
+            );
+        } catch (JwtException e) {
+            throw new RuntimeException("Invalid JWT");
+        }
+    }
 }
