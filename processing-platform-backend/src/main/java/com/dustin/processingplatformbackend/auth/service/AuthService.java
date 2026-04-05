@@ -47,12 +47,11 @@ public class AuthService {
         User user = userRepository.findByEmail(loginRequest.email())
             .orElseThrow(() -> new RuntimeException("Invalid credentials"));
         
-        boolean isValid = passwordEncoder.matches(
+
+        if (!passwordEncoder.matches(
             loginRequest.password(),
             user.getPasswordHash()
-        );
-
-        if (!isValid) {
+        )) {
             throw new RuntimeException("Invalid credentials");
         }
 
