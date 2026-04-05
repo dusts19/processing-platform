@@ -4,6 +4,7 @@ import java.net.http.HttpResponse;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import com.dustin.processingplatformbackend.auth.dto.AuthResponse;
 import com.dustin.processingplatformbackend.auth.dto.LoginRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterResponse;
+import com.dustin.processingplatformbackend.auth.dto.UserResponse;
 import com.dustin.processingplatformbackend.auth.model.User;
 import com.dustin.processingplatformbackend.auth.service.AuthService;
 
@@ -42,5 +44,15 @@ public class AuthController {
     public AuthResponse loginUser(@RequestBody LoginRequest loginRequest) {
         
         return authService.loginUser(loginRequest);
+    }
+
+    @GetMapping("/me")
+    public Object me() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new UserResponse(
+            user.getId(),
+            user.getEmail(),
+            user.getCreatedAt()
+        );
     }
 }
