@@ -27,16 +27,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
-            // .headers(headers -> headers.frameOptions((frame -> frame.disable())))
-            // .authorizeHttpRequests(auth -> auth
-            //     .requestMatchers("/h2-console/**").permitAll()
-            //     .anyRequest().permitAll()
             )
+            .headers(headers -> headers.frameOptions((frame -> frame.disable())))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+    // // No H2-console
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    //     http
+    //         .csrf(csrf -> csrf.disable())
+    //         .authorizeHttpRequests(auth -> auth
+    //             .requestMatchers("/api/auth/**").permitAll()
+    //             .anyRequest().authenticated()
+    //         // .headers(headers -> headers.frameOptions((frame -> frame.disable())))
+    //         // .authorizeHttpRequests(auth -> auth
+    //         //     .requestMatchers("/h2-console/**").permitAll()
+    //         //     .anyRequest().permitAll()
+    //         )
+    //         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    //     return http.build();
+    // }
 }
