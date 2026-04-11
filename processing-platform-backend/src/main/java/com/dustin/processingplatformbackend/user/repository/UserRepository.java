@@ -1,11 +1,11 @@
-package com.dustin.processingplatformbackend.auth.repository;
+package com.dustin.processingplatformbackend.user.repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dustin.processingplatformbackend.auth.model.User;
+import com.dustin.processingplatformbackend.user.model.User;
 
 public interface UserRepository extends JpaRepository<User, UUID>{
     Optional<User> findByEmail(String email);

@@ -16,8 +16,8 @@ import com.dustin.processingplatformbackend.auth.dto.LoginRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterResponse;
 import com.dustin.processingplatformbackend.auth.dto.UserResponse;
-import com.dustin.processingplatformbackend.auth.model.User;
 import com.dustin.processingplatformbackend.auth.service.AuthService;
+import com.dustin.processingplatformbackend.user.model.User;
 
 
 @RestController

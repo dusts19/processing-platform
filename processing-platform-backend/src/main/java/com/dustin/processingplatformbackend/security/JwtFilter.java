@@ -9,9 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dustin.processingplatformbackend.auth.util.JwtService;
 import com.dustin.processingplatformbackend.user.model.User;
 import com.dustin.processingplatformbackend.user.repository.UserRepository;
+import com.dustin.processingplatformbackend.auth.util.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

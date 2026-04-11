@@ -3,6 +3,8 @@ package com.dustin.processingplatformbackend.request.model;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.springframework.http.HttpMethod;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,15 +36,21 @@ public class RequestLog {
     @Column(nullable = false, name = "api_key_id")
     private UUID apiKeyId;
 
+    @Column(nullable = false, name = "http_method")
+    private HttpMethod httpMethod;
+
     @Column(nullable = false, name = "endpoint")
     private String endpoint;
 
+    @Column(nullable = false, name = "status_code")
+    private Integer statusCode;
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
     private RequestStatus status;
 
     @Column(nullable = false, name = "latency_ms")
-    private long latencyMs;
+    private Long latencyMs;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     private Instant createdAt;

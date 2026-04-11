@@ -11,7 +11,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.dustin.processingplatformbackend.auth.model.User;
+import com.dustin.processingplatformbackend.user.model.User;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

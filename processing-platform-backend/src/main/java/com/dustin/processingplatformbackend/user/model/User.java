@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.auth.model;
+package com.dustin.processingplatformbackend.user.model;
 
 import java.time.Instant;
 import java.util.UUID;
