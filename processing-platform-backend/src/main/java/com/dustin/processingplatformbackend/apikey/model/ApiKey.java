@@ -33,7 +33,7 @@ public class ApiKey {
     private String prefix;
 
     @Column(nullable = false, name = "key")
-    private String key;
+    private String keyHash;
 
     @Column(nullable = false, name = "created_at")
     private Instant createdAt;

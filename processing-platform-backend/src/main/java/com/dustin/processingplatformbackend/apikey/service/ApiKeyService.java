@@ -36,12 +36,10 @@ public class ApiKeyService {
         
         apiKey.setUserId(userId);
         apiKey.setPrefix(prefix);
-        apiKey.setKey(hash);
+        apiKey.setKeyHash(hash);
 
 
         ApiKey saved = apiKeyRepository.save(apiKey);
-
-
 
         return new ApiKeyResponse(
             saved.getId(),

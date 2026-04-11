@@ -9,9 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dustin.processingplatformbackend.auth.model.User;
-import com.dustin.processingplatformbackend.auth.repository.UserRepository;
 import com.dustin.processingplatformbackend.auth.util.JwtService;
+import com.dustin.processingplatformbackend.user.model.User;
+import com.dustin.processingplatformbackend.user.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,6 +35,13 @@ public class JwtFilter extends OncePerRequestFilter{
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/api/process")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String authHeader = request.getHeader("Authorization");
         
