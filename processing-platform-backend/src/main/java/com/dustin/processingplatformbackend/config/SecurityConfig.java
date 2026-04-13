@@ -1,5 +1,8 @@
 package com.dustin.processingplatformbackend.config;
 
+import com.dustin.processingplatformbackend.apikey.repository.ApiKeyRepository;
+import com.dustin.processingplatformbackend.auth.util.JwtService;
+import com.dustin.processingplatformbackend.security.ApiKeyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,15 +12,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.dustin.processingplatformbackend.security.JwtFilter;
+import com.dustin.processingplatformbackend.user.repository.UserRepository;
 
 @Configuration
 public class SecurityConfig {
-    
-    private final JwtFilter jwtFilter;
-
-    public SecurityConfig(JwtFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -25,32 +23,31 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(
+        HttpSecurity http, 
+        JwtFilter jwtFilter, 
+        ApiKeyFilter apiKeyFilter
+    ) throws Exception {
         http
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions((frame -> frame.disable())))
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(apiKeyFilter, JwtFilter.class);
         return http.build();
     }
-    // // No H2-console
-    // @Bean
-    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //     http
-    //         .csrf(csrf -> csrf.disable())
-    //         .authorizeHttpRequests(auth -> auth
-    //             .requestMatchers("/api/auth/**").permitAll()
-    //             .anyRequest().authenticated()
-    //         // .headers(headers -> headers.frameOptions((frame -> frame.disable())))
-    //         // .authorizeHttpRequests(auth -> auth
-    //         //     .requestMatchers("/h2-console/**").permitAll()
-    //         //     .anyRequest().permitAll()
-    //         )
-    //         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-    //     return http.build();
-    // }
+
+    @Bean
+    public JwtFilter jwtFilter(UserRepository repo, JwtService jwtService) {
+        return new JwtFilter(jwtService, repo);
+    }
+
+    @Bean
+    public ApiKeyFilter apiKeyFilter(ApiKeyRepository repo, PasswordEncoder passwordEncoder) {
+        return new ApiKeyFilter(repo, passwordEncoder);
+    }
 }

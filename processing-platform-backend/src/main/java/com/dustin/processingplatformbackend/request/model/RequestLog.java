@@ -36,8 +36,9 @@ public class RequestLog {
     @Column(nullable = false, name = "api_key_id")
     private UUID apiKeyId;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "http_method")
-    private HttpMethod httpMethod;
+    private RequestMethod httpMethod;
 
     @Column(nullable = false, name = "endpoint")
     private String endpoint;

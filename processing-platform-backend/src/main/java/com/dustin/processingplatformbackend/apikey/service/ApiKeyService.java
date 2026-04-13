@@ -1,5 +1,6 @@
 package com.dustin.processingplatformbackend.apikey.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,18 +11,14 @@ import com.dustin.processingplatformbackend.apikey.model.ApiKey;
 import com.dustin.processingplatformbackend.apikey.repository.ApiKeyRepository;
 import com.dustin.processingplatformbackend.apikey.util.ApiKeyGenerator;
 import com.dustin.processingplatformbackend.apikey.util.GeneratedApiKey;
-import com.dustin.processingplatformbackend.request.repository.RequestLogRepository;
-
 @Service
 public class ApiKeyService {
 
     private final ApiKeyRepository apiKeyRepository;
-    private final RequestLogRepository requestLogRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ApiKeyService(ApiKeyRepository apiKeyRepository, RequestLogRepository requestLogRepository, PasswordEncoder passwordEncoder) {
+    public ApiKeyService(ApiKeyRepository apiKeyRepository, PasswordEncoder passwordEncoder) {
         this.apiKeyRepository = apiKeyRepository;
-        this.requestLogRepository = requestLogRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -46,5 +43,17 @@ public class ApiKeyService {
             apikeyString.fullKey(),
             saved.getCreatedAt()
         );
+    }
+
+
+    public List<ApiKeyResponse> getApiKeys(UUID userId) {
+        return apiKeyRepository.findAllByUserId(userId)
+            .stream()
+            .map(apiKey -> new ApiKeyResponse(
+                apiKey.getId(),
+                null,
+                apiKey.getCreatedAt()
+            ))
+            .toList();
     }
 }

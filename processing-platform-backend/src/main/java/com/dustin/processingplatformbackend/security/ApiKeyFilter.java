@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
 public class ApiKeyFilter extends OncePerRequestFilter{
 
     
@@ -40,6 +40,12 @@ public class ApiKeyFilter extends OncePerRequestFilter{
         String path = request.getRequestURI();
 
         if (!path.startsWith("/api/process")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+        if (existingAuth != null) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -75,12 +81,15 @@ public class ApiKeyFilter extends OncePerRequestFilter{
             return;
         }
 
-        request.setAttribute("userId", apiKey.getUserId());
-        request.setAttribute("apikeyId", apiKey.getId());
+        AuthPrincipal principal = new AuthPrincipal(
+            apiKey.getUserId(),
+            apiKey.getId(),
+            AuthType.API_KEY
+        );
 
         UsernamePasswordAuthenticationToken auth = 
             new UsernamePasswordAuthenticationToken(
-                apiKey.getUserId(), 
+                principal, 
                 null, 
                 Collections.emptyList()
             );

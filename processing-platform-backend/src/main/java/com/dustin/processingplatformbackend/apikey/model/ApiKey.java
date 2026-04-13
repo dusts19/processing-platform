@@ -32,7 +32,7 @@ public class ApiKey {
     @Column(nullable = false, name = "prefix")
     private String prefix;
 
-    @Column(nullable = false, name = "key")
+    @Column(nullable = false, name = "key_hash")
     private String keyHash;
 
     @Column(nullable = false, name = "created_at")

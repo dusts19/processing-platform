@@ -1,9 +1,5 @@
 package com.dustin.processingplatformbackend.auth.controller;
 
-import java.net.http.HttpResponse;
-import java.util.UUID;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

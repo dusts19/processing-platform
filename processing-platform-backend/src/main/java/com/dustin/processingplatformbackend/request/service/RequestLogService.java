@@ -1,11 +1,14 @@
 package com.dustin.processingplatformbackend.request.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
+import com.dustin.processingplatformbackend.request.dto.RequestLogResponse;
 import com.dustin.processingplatformbackend.request.model.RequestLog;
+import com.dustin.processingplatformbackend.request.model.RequestMethod;
 import com.dustin.processingplatformbackend.request.model.RequestStatus;
 import com.dustin.processingplatformbackend.request.repository.RequestLogRepository;
 
@@ -24,7 +27,7 @@ public class RequestLogService {
         RequestLog requestLog = new RequestLog();
         requestLog.setUserId(userId);
         requestLog.setApiKeyId(apiKeyId);
-        requestLog.setHttpMethod(httpMethod);
+        requestLog.setHttpMethod(RequestMethod.valueOf(httpMethod.name()));
         requestLog.setEndpoint(endpoint);
         requestLog.setStatusCode(statusCode);
         requestLog.setStatus(status);
@@ -32,5 +35,22 @@ public class RequestLogService {
         
         requestLogRepository.save(requestLog);
 
+    }
+
+    public List<RequestLogResponse> getRequestLogs(UUID userId) {
+        
+        List<RequestLog> requestLogs = requestLogRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        return requestLogs.stream()
+            .map(log -> new RequestLogResponse(
+                log.getId(),
+                log.getHttpMethod().name(),
+                log.getEndpoint(),
+                log.getStatusCode(),
+                log.getStatus(),
+                log.getLatencyMs(),
+                log.getCreatedAt()
+            ))
+            .toList();
     }
 }
