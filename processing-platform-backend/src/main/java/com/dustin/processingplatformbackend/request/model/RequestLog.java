@@ -3,7 +3,6 @@ package com.dustin.processingplatformbackend.request.model;
 import java.time.Instant;
 import java.util.UUID;
 
-import org.springframework.http.HttpMethod;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
