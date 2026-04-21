@@ -11,4 +11,6 @@ import com.dustin.processingplatformbackend.apikey.model.ApiKey;
 public interface ApiKeyRepository extends JpaRepository<ApiKey, UUID>{
     List<ApiKey> findAllByUserId(UUID userId);
     Optional<ApiKey> findByPrefix(String prefix);
+
+    Optional<ApiKey> findByIdAndUserId(UUID apiKeyId, UUID userId);
 }

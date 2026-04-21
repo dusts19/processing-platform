@@ -56,4 +56,12 @@ public class ApiKeyService {
             ))
             .toList();
     }
+
+    public void deleteApiKey(UUID userId, UUID apiKeyId) {
+
+        ApiKey apiKey = apiKeyRepository.findByIdAndUserId(apiKeyId, userId)
+            .orElseThrow(() -> new RuntimeException("API key not found"));
+
+        apiKeyRepository.delete(apiKey);
+    }
 }
