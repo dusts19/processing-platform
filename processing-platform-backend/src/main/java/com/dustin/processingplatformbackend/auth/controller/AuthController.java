@@ -32,7 +32,6 @@ public class AuthController {
 
         RegisterResponse registerResponse = authService.registerUser(registerRequest);
 
-
         return registerResponse;
     }
 

@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { login } from "../api/authApi";
+import { register } from "../api/authApi";
 
 
-const AuthPage = () => {
+const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await login(email, password);
-        setEmail("");
-        setPassword("");
+        await register(email, password);
+
+        setEmail("")
+        setPassword("")
+
     }
 
-    return(
+    return (
         <div>
-
             <form onSubmit={handleSubmit}>
-                <input
+                <input 
                     type="email"
                     name="email"
                     value={email}
@@ -27,22 +27,18 @@ const AuthPage = () => {
                     onChange={e => setEmail(e.target.value)}
                     required
                 />
-
                 <input 
-                    name="password"
                     type="password"
+                    name="password"
                     value={password}
                     placeholder="Password"
                     onChange={e => setPassword(e.target.value)}
                     required
                 />
-
-                <button type="submit">Login</button>
-
+                <button type="submit">Register</button>
             </form>
         </div>
     )
-
 }
 
-export default AuthPage;
+export default RegisterPage;
