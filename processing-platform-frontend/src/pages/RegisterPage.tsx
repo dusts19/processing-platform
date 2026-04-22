@@ -5,14 +5,28 @@ import { register } from "../api/authApi";
 const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await register(email, password);
+        setLoading(true);
+        setError("");
 
-        setEmail("")
-        setPassword("")
+        try{
+            await register(email, password);
+            setEmail("")
+            setPassword("")
+        } catch (err: unknown){
+            if (err instanceof Error){
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred");
+            }
+        } finally {
+            setLoading(false);
+        }
 
     }
 
@@ -25,6 +39,7 @@ const RegisterPage = () => {
                     value={email}
                     placeholder="Email"
                     onChange={e => setEmail(e.target.value)}
+                    disabled={loading}
                     required
                 />
                 <input 
@@ -33,9 +48,15 @@ const RegisterPage = () => {
                     value={password}
                     placeholder="Password"
                     onChange={e => setPassword(e.target.value)}
+                    disabled={loading}
                     required
                 />
-                <button type="submit">Register</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Registering..." : "Register"}
+                </button>
+                
+                {error && <p style={{ color: "red" }}>{error}</p>}
+
             </form>
         </div>
     )

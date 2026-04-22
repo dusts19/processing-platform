@@ -2,17 +2,32 @@ import { useState } from "react";
 import { login } from "../api/authApi";
 
 
-const AuthPage = () => {
+const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await login(email, password);
-        setEmail("");
-        setPassword("");
+        setLoading(true);
+        setError("");
+
+        try {
+            await login(email, password);
+            setEmail("");
+            setPassword("");
+        } catch(err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred");
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     return(
@@ -25,6 +40,7 @@ const AuthPage = () => {
                     value={email}
                     placeholder="Email"
                     onChange={e => setEmail(e.target.value)}
+                    disabled={loading}
                     required
                 />
 
@@ -34,10 +50,15 @@ const AuthPage = () => {
                     value={password}
                     placeholder="Password"
                     onChange={e => setPassword(e.target.value)}
+                    disabled={loading}
                     required
                 />
 
-                <button type="submit">Login</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Logging in..." : "Login"}
+                </button>
+
+                {error && <p style={{ color: "red"}}>{error}</p>}
 
             </form>
         </div>
@@ -45,4 +66,4 @@ const AuthPage = () => {
 
 }
 
-export default AuthPage;
+export default LoginPage;

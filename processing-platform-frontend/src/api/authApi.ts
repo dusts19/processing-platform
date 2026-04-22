@@ -1,19 +1,15 @@
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-
-
+import { apiClient } from "./client";
 
 export const register = async (email: string, password: string) => {
-    const response = await fetch(`${BASE_URL}/auth/register`,
-        {
-            method:"POST",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({email, password})
-        }
-    );
+    
+    const response = await apiClient("/auth/register", {
+        method:"POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({email, password})
+    });
+
     if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message || "Registration failed")
@@ -25,17 +21,9 @@ export const register = async (email: string, password: string) => {
 }
 
 
-
-
-
-
-
-
 export const login = async (email: string, password: string) => {
-    // const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    const response = await fetch(
-        `${BASE_URL}/auth/login`,
-        {
+
+    const response = await apiClient("/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -43,6 +31,8 @@ export const login = async (email: string, password: string) => {
             body: JSON.stringify( {email, password})
         }
     );
+
+
     if (!response.ok) {
         // throw new Error(`Response status: ${response.status}`)
         const error = await response.json();
