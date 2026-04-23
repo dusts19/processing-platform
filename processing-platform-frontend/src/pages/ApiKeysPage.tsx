@@ -6,6 +6,9 @@ import { createApiKey, deleteApiKey, getApiKeys } from "../api/apiKeyApi";
 const ApiKeysPage = () => {
     // const token = localStorage.getItem("token");
     const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
 
     useEffect(() => {
         const fetchKeys = async () => {
@@ -20,35 +23,46 @@ const ApiKeysPage = () => {
     },[])
 
     const handleCreate = async () => {
+        setLoading(true);
+        setError("");
         try {
             const newApiKey = await createApiKey();
+            alert(newApiKey.key);
             setApiKeys((prev) => [...prev, newApiKey]);
-        } catch (err) {
-            console.error(err);
+        } catch {
+            setError("Failed to create API key");
+        } finally {
+            setLoading(false);
         }
     }    
 
     const handleDelete = async (id:string) => {
+        setError("");
+
         try {
             await deleteApiKey(id);
-            setApiKeys(prev => prev.filter(item => item.id != id))
-        } catch (err) {
-            console.error(err);
+            setApiKeys(prev => prev.filter(item => item.id !== id))
+        } catch {
+            setError("Failed to delete API key");
         }
     }
 
     return (
         <div>
-            <button onClick={handleCreate}>Create Api Key</button>
+            <button onClick={handleCreate} disabled={loading}>
+                {loading ? "Creating..." : "Create Api Key"}
+            </button>
 
-            {apiKeys && 
+            {error && <p style={{ color:"red" }}>{error}</p> }
+
+            {apiKeys.length > 0 && (
                 <ul>{apiKeys.map(apiKey => (
                     <li key={apiKey.id}>
                         <div>{apiKey.key}</div>
                         <button onClick={() => handleDelete(apiKey.id)}>Delete</button></li>
                 ))}
                 </ul>
-            }
+            )}
 
         </div>
     )
