@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "../api/authApi";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 const LoginPage = () => {
@@ -7,6 +8,13 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+        return <Navigate to="/dashboard" replace/>
+    }
 
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -19,12 +27,14 @@ const LoginPage = () => {
             await login(email, password);
             setEmail("");
             setPassword("");
+            navigate("/dashboard");
         } catch(err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
             } else {
                 setError("An unexpected error occurred");
             }
+
         } finally {
             setLoading(false);
         }

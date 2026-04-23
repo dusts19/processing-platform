@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { register } from "../api/authApi";
+import { Navigate } from "react-router-dom";
 
 
 const RegisterPage = () => {
@@ -7,6 +8,13 @@ const RegisterPage = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    const token = localStorage.getItem("token");
+    
+    if (token) {
+        return <Navigate to="/dashboard" replace />
+    }
+
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
