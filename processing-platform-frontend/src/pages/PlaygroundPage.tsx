@@ -1,22 +1,23 @@
 import { useState } from "react";
+import { processInput } from "../api/playgroundApi";
+import type { ProcessResponse } from "../types/processResponse";
 
 
 const PlaygroundPage = () => {
     const [input, setInput] = useState("");
     const [apiKey, setApiKey] = useState("");
-    const [response, setResponse] = useState("");
+    const [response, setResponse] = useState<ProcessResponse | null>(null);
 
     
     const handleSubmit = async (e : React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // TODO: create api/playgroundAPI.tsx with processInput()
-        const res = await processInput(input, apiKey);
-        setResponse(res);
+        const result: ProcessResponse = await processInput(input, apiKey);
+        setResponse(result);
         // setResponse(`You entered: ${input}`)
 
     }
-
     return(
         <div>
             <div>
@@ -41,7 +42,12 @@ const PlaygroundPage = () => {
                 </form>
             </div>
             <div>
-                {response && <p>{response}</p>}
+                {response && <div>
+                    <div>Length:     {response.length}</div>
+                    <div>Word Count: {response.wordCount}</div>
+                    <div>Uppercase: {response.uppercase}</div>
+                    <div>Latency (ms): {response.processingTimeMs}</div>
+                </div>}
             </div>
         </div>
     );
