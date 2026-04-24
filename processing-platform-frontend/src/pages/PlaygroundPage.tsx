@@ -7,15 +7,24 @@ const PlaygroundPage = () => {
     const [input, setInput] = useState("");
     const [apiKey, setApiKey] = useState("");
     const [response, setResponse] = useState<ProcessResponse | null>(null);
-
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     
     const handleSubmit = async (e : React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
+        setLoading(true);
+        setError("");
 
-        // TODO: create api/playgroundAPI.tsx with processInput()
-        const result: ProcessResponse = await processInput(input, apiKey);
-        setResponse(result);
-        // setResponse(`You entered: ${input}`)
+        try {
+            const result = await processInput(input, apiKey);
+            setResponse(result);
+            setInput("");
+        } catch(err) {
+            setError(err instanceof Error ? err.message : "Could not process message");
+        } finally {
+            setLoading(false);
+        }
 
     }
     return(
@@ -28,6 +37,7 @@ const PlaygroundPage = () => {
                         value={input}
                         placeholder="Enter text..."
                         onChange={(e) => setInput(e.target.value)}
+                        disabled={loading}
                     />
 
                     <input 
@@ -36,9 +46,9 @@ const PlaygroundPage = () => {
                         value={apiKey}
                         placeholder="API key..."
                         onChange={(e) => setApiKey(e.target.value)}
-
+                        disabled={loading}
                     />
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={loading}>Submit</button>
                 </form>
             </div>
             <div>
@@ -49,6 +59,7 @@ const PlaygroundPage = () => {
                     <div>Latency (ms): {response.processingTimeMs}</div>
                 </div>}
             </div>
+            {error && <p style={{ color:"red" }}>{error}</p>}
         </div>
     );
 }
