@@ -34,11 +34,35 @@ const DashboardPage = () => {
 
             {!loading && logs.length === 0 && <p>No logs yet</p>}
 
-            <ul>{logs.map((log) => (
-                <li key={log.id}>
-                    {log.endpoint} - {log.status}
-                </li>
-            ))}</ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Status</th>
+                        <th>Latency</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {logs.map((log) => (
+                        <tr key={log.id}>
+                            <td>{log.httpMethod}</td>
+                            <td>{log.endpoint}</td>
+                            <td style={{color: log.statusCode >= 400 ? "red" : "green" }}>
+                                {log.statusCode} - {log.status}
+                            </td>
+                            <td>{log.latencyMs} ms</td>
+                            <td>
+                                {log.createdAt
+                                ? new Date(log.createdAt).toLocaleDateString()
+                                : "---"}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            
             
         </div>
     )
