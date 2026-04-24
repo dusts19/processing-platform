@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const PlaygroundPage = () => {
     const [input, setInput] = useState("");
+    const [apiKey, setApiKey] = useState("");
     const [response, setResponse] = useState("");
 
     
@@ -10,7 +11,9 @@ const PlaygroundPage = () => {
         e.preventDefault();
 
         // TODO: create api/playgroundAPI.tsx with processInput()
-        setResponse(`You entered: ${input}`)
+        const res = await processInput(input, apiKey);
+        setResponse(res);
+        // setResponse(`You entered: ${input}`)
 
     }
 
@@ -24,6 +27,15 @@ const PlaygroundPage = () => {
                         value={input}
                         placeholder="Enter text..."
                         onChange={(e) => setInput(e.target.value)}
+                    />
+
+                    <input 
+                        name="api-key"
+                        type="text"
+                        value={apiKey}
+                        placeholder="API key..."
+                        onChange={(e) => setApiKey(e.target.value)}
+
                     />
                     <button type="submit">Submit</button>
                 </form>
