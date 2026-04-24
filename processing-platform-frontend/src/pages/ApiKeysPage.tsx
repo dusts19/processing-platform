@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import type { ApiKey } from "../types/apiKey";
+import type { ApiKeyResponse } from "../types/apiKeyResponse";
 import { createApiKey, deleteApiKey, getApiKeys } from "../api/apiKeyApi";
 
 // create ApiKey management UI
 const ApiKeysPage = () => {
     // const token = localStorage.getItem("token");
-    const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+    const [apiKeys, setApiKeys] = useState<ApiKeyResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
