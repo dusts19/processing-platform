@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { login } from "../api/authApi";
 import { Navigate, useNavigate } from "react-router-dom";
+import { getErrorMessage } from "../components/shared/apiError";
+import { ErrorMessage } from "../components/shared/ErrorMessage";
 
 
 const LoginPage = () => {
@@ -28,12 +30,8 @@ const LoginPage = () => {
             setEmail("");
             setPassword("");
             navigate("/dashboard");
-        } catch(err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("An unexpected error occurred");
-            }
+        } catch(err) {
+            setError(getErrorMessage(err));
 
         } finally {
             setLoading(false);
@@ -68,8 +66,7 @@ const LoginPage = () => {
                     {loading ? "Logging in..." : "Login"}
                 </button>
 
-                {error && <p style={{ color: "red"}}>{error}</p>}
-
+                <ErrorMessage message={error} />
             </form>
         </div>
     )

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { register } from "../api/authApi";
 import { Navigate } from "react-router-dom";
+import { getErrorMessage } from "../components/shared/apiError";
+import { ErrorMessage } from "../components/shared/ErrorMessage";
 
 
 const RegisterPage = () => {
@@ -10,7 +12,7 @@ const RegisterPage = () => {
     const [error, setError] = useState("");
 
     const token = localStorage.getItem("token");
-    
+
     if (token) {
         return <Navigate to="/dashboard" replace />
     }
@@ -26,12 +28,8 @@ const RegisterPage = () => {
             await register(email, password);
             setEmail("")
             setPassword("")
-        } catch (err: unknown){
-            if (err instanceof Error){
-                setError(err.message);
-            } else {
-                setError("An unexpected error occurred");
-            }
+        } catch (err){
+            setError(getErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -63,8 +61,7 @@ const RegisterPage = () => {
                     {loading ? "Registering..." : "Register"}
                 </button>
                 
-                {error && <p style={{ color: "red" }}>{error}</p>}
-
+                <ErrorMessage message={error} />
             </form>
         </div>
     )

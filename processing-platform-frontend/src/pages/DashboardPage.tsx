@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { RequestLogResponse } from "../types/requestLogResponse";
 import { getRequestLogs } from "../api/dashboardApi";
+import { getErrorMessage } from "../components/shared/apiError";
+import { ErrorMessage } from "../components/shared/ErrorMessage";
 
 
 const DashboardPage = () => {
@@ -17,8 +19,8 @@ const DashboardPage = () => {
             try {
                 const data = await getRequestLogs();
                 setLogs(data)
-            } catch {
-                setError("Failed to fetch logs")
+            } catch (err) {
+                setError(getErrorMessage(err))
             } finally {
                 setLoading(false);
             }
@@ -30,7 +32,7 @@ const DashboardPage = () => {
     return(
         <div>
             {loading && <p>{loading}</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <ErrorMessage message={error}/>
 
             {!loading && logs.length === 0 && <p>No logs yet</p>}
 

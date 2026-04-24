@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { processInput } from "../api/playgroundApi";
 import type { ProcessResponse } from "../types/processResponse";
+import { getErrorMessage } from "../components/shared/apiError";
+import { ErrorMessage } from "../components/shared/ErrorMessage";
 
 
 const PlaygroundPage = () => {
@@ -21,7 +23,7 @@ const PlaygroundPage = () => {
             setResponse(result);
             setInput("");
         } catch(err) {
-            setError(err instanceof Error ? err.message : "Could not process message");
+            setError(getErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -60,6 +62,7 @@ const PlaygroundPage = () => {
                 </div>}
             </div>
             {error && <p style={{ color:"red" }}>{error}</p>}
+            <ErrorMessage message={error} />
         </div>
     );
 }
