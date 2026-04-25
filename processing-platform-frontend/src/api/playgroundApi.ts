@@ -4,7 +4,7 @@ export const processInput = async (input:string, apiKey:string) => {
     const response = await apiClient("/process", {
         method: "POST",
         headers: {
-            Authorization: `Bearer ${apiKey}`,
+            "x-api-key": apiKey,
         },
         body: JSON.stringify({input})
     })

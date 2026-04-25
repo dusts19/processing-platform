@@ -30,38 +30,45 @@ const PlaygroundPage = () => {
 
     }
     return(
-        <div>
-            <div>
-                <form onSubmit={handleSubmit}>
+        <div className="space-y-6">
+            <h1 className="text-2xl p-2 mb-3 font-semibold">API Playground</h1>
+            <div className="bg-white rounded-lg shadow p-6 max-w-xl">
+                <form 
+                    onSubmit={handleSubmit}
+                    className="flex flex-col gap-4"
+                >
                     <input 
-                        name="process"
                         type="text"
                         value={input}
                         placeholder="Enter text..."
                         onChange={(e) => setInput(e.target.value)}
                         disabled={loading}
+                        className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
 
                     <input 
-                        name="api-key"
                         type="text"
                         value={apiKey}
                         placeholder="API key..."
                         onChange={(e) => setApiKey(e.target.value)}
                         disabled={loading}
+                        className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
-                    <button type="submit" disabled={loading}>Submit</button>
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="border rounded p-2 bg-blue-500 text-white focus:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >{loading ? "Processing...": "Submit"}</button>
                 </form>
             </div>
             <div>
-                {response && <div>
-                    <div>Length:     {response.length}</div>
-                    <div>Word Count: {response.wordCount}</div>
-                    <div>Uppercase: {response.uppercase}</div>
-                    <div>Latency (ms): {response.processingTimeMs}</div>
+                {response && <div className="grid grid-cols-2 gap-4 bg-white rounded-lg shadow p-6 max-w-xl space-y-2">
+                    <div><strong>Length:       </strong>{response.length}</div>
+                    <div><strong>Word Count:   </strong>{response.wordCount}</div>
+                    <div className="break-all"><strong>Uppercase:    </strong>{response.uppercase}</div>
+                    <div><strong>Latency (ms): </strong>{response.processingTimeMs}</div>
                 </div>}
             </div>
-            {error && <p style={{ color:"red" }}>{error}</p>}
             <ErrorMessage message={error} />
         </div>
     );
