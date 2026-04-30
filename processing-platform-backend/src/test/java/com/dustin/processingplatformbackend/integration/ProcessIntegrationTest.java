@@ -61,7 +61,7 @@ public class ProcessIntegrationTest {
         MvcResult processResult = mockMvc.perform(
             post("/api/process")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + apiKeyToken)
+                .header("x-api-key", apiKeyToken)
                 .content(objectMapper.writeValueAsString(processRequest))
         )
         .andExpect(status().isOk())

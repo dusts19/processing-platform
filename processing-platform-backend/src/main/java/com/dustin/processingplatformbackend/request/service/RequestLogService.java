@@ -49,7 +49,7 @@ public class RequestLogService {
                 log.getStatusCode(),
                 log.getStatus(),
                 log.getLatencyMs(),
-                log.getCreatedAt()
+                log.getCreatedAt().toString()
             ))
             .toList();
     }

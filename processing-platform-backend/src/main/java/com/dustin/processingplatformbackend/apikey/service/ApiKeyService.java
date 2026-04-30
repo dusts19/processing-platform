@@ -10,6 +10,7 @@ import com.dustin.processingplatformbackend.apikey.dto.ApiKeyResponse;
 import com.dustin.processingplatformbackend.apikey.model.ApiKey;
 import com.dustin.processingplatformbackend.apikey.repository.ApiKeyRepository;
 import com.dustin.processingplatformbackend.apikey.util.ApiKeyGenerator;
+import com.dustin.processingplatformbackend.apikey.util.ApiKeyMaskingUtil;
 import com.dustin.processingplatformbackend.apikey.util.GeneratedApiKey;
 @Service
 public class ApiKeyService {
@@ -27,12 +28,14 @@ public class ApiKeyService {
         GeneratedApiKey apikeyString = ApiKeyGenerator.generate();
 
         String prefix = apikeyString.prefix();
+        String suffix = apikeyString.suffix();
         String hash = passwordEncoder.encode(apikeyString.fullKey());
 
         ApiKey apiKey = new ApiKey();
         
         apiKey.setUserId(userId);
         apiKey.setPrefix(prefix);
+        apiKey.setSuffix(suffix);
         apiKey.setKeyHash(hash);
 
 
@@ -51,7 +54,7 @@ public class ApiKeyService {
             .stream()
             .map(apiKey -> new ApiKeyResponse(
                 apiKey.getId(),
-                null,
+                ApiKeyMaskingUtil.mask(apiKey.getPrefix(), apiKey.getSuffix()),
                 apiKey.getCreatedAt()
             ))
             .toList();

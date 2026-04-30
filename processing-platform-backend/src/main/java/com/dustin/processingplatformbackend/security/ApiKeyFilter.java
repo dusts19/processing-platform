@@ -50,14 +50,13 @@ public class ApiKeyFilter extends OncePerRequestFilter{
             return;
         }
 
-        String authHeader = request.getHeader("Authorization");
+        String rawKey = request.getHeader("x-api-key");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (rawKey == null || rawKey.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String rawKey = authHeader.substring(7);
 
 
         if (!rawKey.startsWith("sk_test_") || rawKey.length() < 16){

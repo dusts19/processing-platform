@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.dustin.processingplatformbackend.auth.dto.AuthResponse;
 import com.dustin.processingplatformbackend.auth.dto.LoginRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterRequest;
-import com.dustin.processingplatformbackend.auth.dto.RegisterResponse;
 // import com.fasterxml.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ObjectMapper;
 

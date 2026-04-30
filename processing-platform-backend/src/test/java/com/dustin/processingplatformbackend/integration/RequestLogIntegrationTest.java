@@ -72,7 +72,7 @@ public class RequestLogIntegrationTest {
         MvcResult processResult = mockMvc.perform(
             post("/api/process")
             .contentType(MediaType.APPLICATION_JSON)
-            .header("Authorization", "Bearer " + apiKeyString)
+            .header("x-api-key", apiKeyString)
             .content(jsonMapper.writeValueAsString(processRequest))
         )
         .andExpect(status().isOk())

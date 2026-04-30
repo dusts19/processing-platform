@@ -32,6 +32,9 @@ public class ApiKey {
     @Column(nullable = false, name = "prefix")
     private String prefix;
 
+    @Column(nullable = false, name = "suffix")
+    private String suffix;
+
     @Column(nullable = false, name = "key_hash")
     private String keyHash;
 

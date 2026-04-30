@@ -3,6 +3,7 @@ package com.dustin.processingplatformbackend.request.model;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,6 +53,7 @@ public class RequestLog {
     @Column(nullable = false, name = "latency_ms")
     private Long latencyMs;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(nullable = false, updatable = false, name = "created_at")
     private Instant createdAt;
 

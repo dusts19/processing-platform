@@ -18,7 +18,8 @@ public class ApiKeyGenerator {
 
         String fullKey = "sk_test_" + publicId + encoded;
         String prefix = "sk_test_" + publicId;
-        return new GeneratedApiKey(fullKey, prefix);
+        String suffix = fullKey.substring(fullKey.length() - 4);
+        return new GeneratedApiKey(fullKey, prefix, suffix);
     }
 
 
