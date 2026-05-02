@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.security;
+package com.dustin.processingplatformbackend.security.model;
 
 import java.util.UUID;
 

@@ -1,8 +1,10 @@
 package com.dustin.processingplatformbackend.config;
 
 import com.dustin.processingplatformbackend.apikey.repository.ApiKeyRepository;
-import com.dustin.processingplatformbackend.auth.util.JwtService;
-import com.dustin.processingplatformbackend.security.ApiKeyFilter;
+import com.dustin.processingplatformbackend.security.apikey.ApiKeyFilter;
+import com.dustin.processingplatformbackend.security.jwt.JwtFilter;
+import com.dustin.processingplatformbackend.security.jwt.JwtService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.dustin.processingplatformbackend.security.JwtFilter;
 import com.dustin.processingplatformbackend.user.repository.UserRepository;
 
 @Configuration

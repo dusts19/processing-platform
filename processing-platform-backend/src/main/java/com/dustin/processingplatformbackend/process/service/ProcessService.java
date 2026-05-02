@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.dustin.processingplatformbackend.process.dto.ProcessRequest;
 import com.dustin.processingplatformbackend.process.dto.ProcessResponse;
-import com.dustin.processingplatformbackend.request.model.RequestStatus;
-import com.dustin.processingplatformbackend.request.service.RequestLogService;
+import com.dustin.processingplatformbackend.requestlog.model.RequestStatus;
+import com.dustin.processingplatformbackend.requestlog.service.RequestLogService;
 
 @Service
 public class ProcessService {

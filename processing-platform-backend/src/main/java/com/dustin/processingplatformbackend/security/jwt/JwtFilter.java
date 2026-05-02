@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.security;
+package com.dustin.processingplatformbackend.security.jwt;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -7,12 +7,12 @@ import java.util.UUID;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.dustin.processingplatformbackend.security.model.AuthPrincipal;
+import com.dustin.processingplatformbackend.security.model.AuthType;
 import com.dustin.processingplatformbackend.user.model.User;
 import com.dustin.processingplatformbackend.user.repository.UserRepository;
-import com.dustin.processingplatformbackend.auth.util.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

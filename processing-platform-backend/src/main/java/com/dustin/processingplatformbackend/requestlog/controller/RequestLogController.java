@@ -10,6 +10,7 @@ import com.dustin.processingplatformbackend.request.dto.RequestLogResponse;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -25,9 +26,9 @@ public class RequestLogController {
     }
 
     @GetMapping
-    public List<RequestLogResponse> getRequestLogs(@AuthenticationPrincipal AuthPrincipal principal) {
-        
-        return requestLogService.getRequestLogs(principal.userId());
+    public ResponseEntity<List<RequestLogResponse>> getRequestLogs(@AuthenticationPrincipal AuthPrincipal principal) {
+        List<RequestLogResponse> requestLogResponse = requestLogService.getRequestLogs(principal.userId());
+        return ResponseEntity.ok(requestLogResponse);
     }
     
 

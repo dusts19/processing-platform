@@ -35,6 +35,10 @@ export const deleteApiKey = async (id:string) => {
         throw new Error("Failed to delete key");
     }
 
+    if (response.status === 204) {
+        return;
+    }
+    
     return response.json();
 }
 

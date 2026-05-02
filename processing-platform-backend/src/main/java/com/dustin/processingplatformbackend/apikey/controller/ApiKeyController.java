@@ -1,13 +1,11 @@
 package com.dustin.processingplatformbackend.apikey.controller;
 
-import com.dustin.processingplatformbackend.security.AuthPrincipal;
-
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dustin.processingplatformbackend.apikey.dto.ApiKeyResponse;
 import com.dustin.processingplatformbackend.apikey.service.ApiKeyService;
+import com.dustin.processingplatformbackend.security.model.AuthPrincipal;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,16 +30,16 @@ public class ApiKeyController {
     }
 
     @PostMapping
-    public ApiKeyResponse createApiKey(@AuthenticationPrincipal AuthPrincipal principal) {
-        
-        return apiKeyService.createApiKey(principal.userId());
-
+    public ResponseEntity<ApiKeyResponse> createApiKey(@AuthenticationPrincipal AuthPrincipal principal) {
+        ApiKeyResponse apiKeyResponse = apiKeyService.createApiKey(principal.userId());
+        return ResponseEntity.ok(apiKeyResponse);
     }
 
     @GetMapping
-    public List<ApiKeyResponse> getApiKeys(@AuthenticationPrincipal AuthPrincipal principal) {
+    public ResponseEntity<List<ApiKeyResponse>> getApiKeys(@AuthenticationPrincipal AuthPrincipal principal) {
+        List<ApiKeyResponse> apiKeyResponse = apiKeyService.getApiKeys(principal.userId());
         
-        return apiKeyService.getApiKeys(principal.userId());
+        return ResponseEntity.ok(apiKeyResponse);
     }
     
     @DeleteMapping("/{id}")

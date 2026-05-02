@@ -1,5 +1,6 @@
 package com.dustin.processingplatformbackend.auth.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,17 +29,17 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public RegisterResponse registerUser(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest registerRequest) {
 
         RegisterResponse registerResponse = authService.registerUser(registerRequest);
 
-        return registerResponse;
+        return ResponseEntity.ok(registerResponse);
     }
 
     @PostMapping("/login")
-    public AuthResponse loginUser(@RequestBody LoginRequest loginRequest) {
-        
-        return authService.loginUser(loginRequest);
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        AuthResponse authResponse = authService.loginUser(loginRequest);
+        return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping("/me")

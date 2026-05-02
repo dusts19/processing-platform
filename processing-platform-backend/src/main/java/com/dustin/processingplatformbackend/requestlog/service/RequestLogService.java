@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.request.service;
+package com.dustin.processingplatformbackend.requestlog.service;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,11 +6,11 @@ import java.util.UUID;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.dustin.processingplatformbackend.request.dto.RequestLogResponse;
-import com.dustin.processingplatformbackend.request.model.RequestLog;
-import com.dustin.processingplatformbackend.request.model.RequestMethod;
-import com.dustin.processingplatformbackend.request.model.RequestStatus;
-import com.dustin.processingplatformbackend.request.repository.RequestLogRepository;
+import com.dustin.processingplatformbackend.requestlog.dto.RequestLogResponse;
+import com.dustin.processingplatformbackend.requestlog.model.RequestLog;
+import com.dustin.processingplatformbackend.requestlog.model.RequestMethod;
+import com.dustin.processingplatformbackend.requestlog.model.RequestStatus;
+import com.dustin.processingplatformbackend.requestlog.repository.RequestLogRepository;
 
 @Service
 public class RequestLogService {

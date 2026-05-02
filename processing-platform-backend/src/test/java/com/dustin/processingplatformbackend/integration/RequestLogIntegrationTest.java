@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.dustin.processingplatformbackend.apikey.dto.ApiKeyResponse;
 import com.dustin.processingplatformbackend.process.dto.ProcessRequest;
-import com.dustin.processingplatformbackend.request.dto.RequestLogResponse;
-import com.dustin.processingplatformbackend.request.model.RequestStatus;
+import com.dustin.processingplatformbackend.requestlog.dto.RequestLogResponse;
+import com.dustin.processingplatformbackend.requestlog.model.RequestStatus;
 import com.dustin.processingplatformbackend.util.TestAuthHelper;
 
 import tools.jackson.core.type.TypeReference;

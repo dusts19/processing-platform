@@ -1,42 +1,37 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import type { RequestLogResponse } from "../types/requestLogResponse";
 import { getRequestLogs } from "../api/dashboardApi";
 import { getErrorMessage } from "../components/shared/apiError";
 import { ErrorMessage } from "../components/shared/ErrorMessage";
+import { useQuery } from "@tanstack/react-query";
 
 
 const DashboardPage = () => {
-    const [logs, setLogs] = useState<RequestLogResponse[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
     
-    useEffect(() => {
-        const fetchLogs = async () => {
-
-            setLoading(true);
-            setError("");
-
-            try {
-                const data = await getRequestLogs();
-                setLogs(data)
-            } catch (err) {
-                setError(getErrorMessage(err))
-            } finally {
-                setLoading(false);
-            }
-        };
-        
-        fetchLogs();
-    }, [])
+    const {
+        data: logs = [],
+        isLoading,
+        error: queryError,
+    } = useQuery<RequestLogResponse[]>({
+        queryKey: ['requestLogs'],
+        queryFn: getRequestLogs,
+        refetchInterval: 5000,
+    })
 
     return(
         <div className="p-6 w-full">
             <div className="space-y-6">
                 <h1 className="text-2xl font-semibold">Dashboard</h1>
-                {loading && <p>Loading...</p>}
-                <ErrorMessage message={error}/>
 
-                {!loading && logs.length === 0 && <p className="text-gray-500">No logs yet</p>}
+                {isLoading && <p>Loading...</p>}
+
+                {queryError instanceof Error &&
+                    <ErrorMessage message={getErrorMessage(queryError)}/>
+                }
+
+                {!isLoading && logs.length === 0 && 
+                    <p className="text-gray-500">No logs yet</p>
+                }
 
                 <div className="bg-white rounded-lg shadow">
                     <table className="w-full border-2 border-gray-300 rounded-lg overflow-hidden">

@@ -7,7 +7,7 @@ import com.dustin.processingplatformbackend.auth.dto.AuthResponse;
 import com.dustin.processingplatformbackend.auth.dto.LoginRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterRequest;
 import com.dustin.processingplatformbackend.auth.dto.RegisterResponse;
-import com.dustin.processingplatformbackend.auth.util.JwtService;
+import com.dustin.processingplatformbackend.security.jwt.JwtService;
 import com.dustin.processingplatformbackend.user.model.User;
 import com.dustin.processingplatformbackend.user.repository.UserRepository;
 

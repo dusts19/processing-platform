@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.security;
+package com.dustin.processingplatformbackend.security.apikey;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -8,11 +8,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.dustin.processingplatformbackend.apikey.model.ApiKey;
 import com.dustin.processingplatformbackend.apikey.repository.ApiKeyRepository;
+import com.dustin.processingplatformbackend.security.model.AuthPrincipal;
+import com.dustin.processingplatformbackend.security.model.AuthType;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

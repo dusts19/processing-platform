@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.auth.util;
+package com.dustin.processingplatformbackend.security.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;

@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.request.model;
+package com.dustin.processingplatformbackend.requestlog.model;
 
 import java.time.Instant;
 import java.util.UUID;

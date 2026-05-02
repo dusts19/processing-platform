@@ -3,6 +3,7 @@ package com.dustin.processingplatformbackend.process.controller;
 import java.util.UUID;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,7 @@ public class ProcessController {
     }
     
     @PostMapping
-    public ProcessResponse processInput(
+    public ResponseEntity<ProcessResponse> processInput(
         @RequestBody ProcessRequest processRequest,
         @AuthenticationPrincipal AuthPrincipal principal,
         HttpServletRequest request) {
@@ -37,7 +38,8 @@ public class ProcessController {
         HttpMethod httpMethod = HttpMethod.valueOf(request.getMethod());
         String endpoint = request.getRequestURI();
 
-        return processService.process(processRequest, userId, apiKeyId, httpMethod, endpoint);
+        ProcessResponse processResponse = processService.process(processRequest, userId, apiKeyId, httpMethod, endpoint);
 
+        return ResponseEntity.ok(processResponse);
     }
 }

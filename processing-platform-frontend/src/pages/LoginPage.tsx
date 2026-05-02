@@ -3,33 +3,47 @@ import { login } from "../api/authApi";
 import { Link, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../components/shared/apiError";
 import { ErrorMessage } from "../components/shared/ErrorMessage";
+import { useMutation } from "@tanstack/react-query";
 
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    // const [loading, setLoading] = useState(false);
+    // const [error, setError] = useState("");
     const navigate = useNavigate();
+    
+    const mutation = useMutation({
+        mutationFn: ({ email, password }: { email: string, password: string }) => 
+            login(email, password),
+        onSuccess: (data) => {
+            setEmail("");
+            setPassword("");
+            localStorage.setItem("token", data.token);
+            navigate("/dashboard");
+        }
+    })
 
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setLoading(true);
-        setError("");
+        mutation.mutate({ email, password });
 
-        try {
-            await login(email, password);
-            setEmail("");
-            setPassword("");
-            navigate("/dashboard");
-        } catch(err) {
-            setError(getErrorMessage(err));
+        // setLoading(true);
+        // setError("");
 
-        } finally {
-            setLoading(false);
-        }
+        // try {
+        //     await login(email, password);
+        //     setEmail("");
+        //     setPassword("");
+        //     navigate("/dashboard");
+        // } catch(err) {
+        //     setError(getErrorMessage(err));
+
+        // } finally {
+        //     setLoading(false);
+        // }
     }
 
     return(
@@ -47,7 +61,7 @@ const LoginPage = () => {
                     value={email}
                     placeholder="Email"
                     onChange={e => setEmail(e.target.value)}
-                    disabled={loading}
+                    disabled={mutation.isPending}
                     required
                     className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
@@ -58,23 +72,23 @@ const LoginPage = () => {
                     value={password}
                     placeholder="Password"
                     onChange={e => setPassword(e.target.value)}
-                    disabled={loading}
+                    disabled={mutation.isPending}
                     required
                     className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
 
                 <button 
                     type="submit" 
-                    disabled={loading}
+                    disabled={mutation.isPending}
                     className="w-full bg-blue-500 text-white rounded p-2 hover:bg-blue-600 disabled:opacity-50"
                     >
-                    {loading ? "Logging in..." : "Login"}
+                    {mutation.isPending ? "Logging in..." : "Login"}
                 </button>
                 <p className="text-sm text-center">
                     Don't have an account yet? <Link to="/register" className="text-blue-500">Register</Link>
                 </p>
 
-                <ErrorMessage message={error} />
+                <ErrorMessage message={ getErrorMessage(mutation.error) } />
             </form>
         </div>
     )

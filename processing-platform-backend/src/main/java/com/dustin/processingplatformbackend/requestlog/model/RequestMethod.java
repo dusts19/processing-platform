@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.request.model;
+package com.dustin.processingplatformbackend.requestlog.model;
 
 public enum RequestMethod {
     GET,
