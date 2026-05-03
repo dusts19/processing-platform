@@ -29,7 +29,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
 
         RegisterResponse registerResponse = authService.registerUser(registerRequest);
 
@@ -37,18 +37,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
         AuthResponse authResponse = authService.loginUser(loginRequest);
         return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping("/me")
-    public Object me() {
+    public ResponseEntity<UserResponse> me() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new UserResponse(
+        UserResponse userResponse = new UserResponse(
             user.getId(),
             user.getEmail(),
             user.getCreatedAt()
         );
+        return ResponseEntity.ok(userResponse);
     }
 }

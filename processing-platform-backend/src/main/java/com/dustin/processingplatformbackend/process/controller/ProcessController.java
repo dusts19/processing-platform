@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dustin.processingplatformbackend.process.dto.ProcessRequest;
 import com.dustin.processingplatformbackend.process.dto.ProcessResponse;
 import com.dustin.processingplatformbackend.process.service.ProcessService;
-import com.dustin.processingplatformbackend.security.AuthPrincipal;
+import com.dustin.processingplatformbackend.security.model.AuthPrincipal;
 
 import jakarta.servlet.http.HttpServletRequest;
 

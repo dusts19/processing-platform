@@ -1,48 +1,55 @@
 // import { useEffect, useState } from "react";
 import type { RequestLogResponse } from "../types/requestLogResponse";
-import { getRequestLogs } from "../api/dashboardApi";
+import { getAnalyticsSummary, getRequestLogs } from "../api/dashboardApi";
 import { getErrorMessage } from "../components/shared/apiError";
 import { ErrorMessage } from "../components/shared/ErrorMessage";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../components/shared/LoadingSpinner";
 import { Table } from "../components/ui/Table";
 import { Card } from "../components/ui/Card";
+import type { AnalyticsSummaryResponse } from "../types/analyticsSummaryResponse";
 
 
 const DashboardPage = () => {
     
     const {
         data: logs = [],
-        isLoading,
-        error: queryError,
+        isLoading: isLogsLoading,
+        error: logsError,
     } = useQuery<RequestLogResponse[]>({
         queryKey: ['requestLogs'],
         queryFn: getRequestLogs,
-        refetchInterval: 5000,
+        // refetchInterval: 5000,
     })
 
-    if (isLoading) {
-        return(
-            <div className="p-6 flex justify-center">
-                <LoadingSpinner />
-            </div>
-        )
-    }
+    const {
+        data: summary = {
+            totalRequests: 0,
+            successRate: 0,
+            avgLatencyMs: 0,
+        },
+        isLoading: isSummaryLoading,
+        error: summaryError,
+    } = useQuery<AnalyticsSummaryResponse>({
+        queryKey:['analyticsSummary'],
+        queryFn: getAnalyticsSummary,
+    })
 
-    if (queryError instanceof Error) {
-        return(
-            <div className="p-6">
-                <ErrorMessage message={getErrorMessage(queryError)} />
-            </div>
-        )
-    }
 
     return(
         <div className="p-6 w-full">
             <div className="space-y-6">
                 <h1 className="text-2xl font-semibold">Dashboard</h1>
                 <Card title="Request Logs">
-                    {logs.length === 0 ? (
+                    {isLogsLoading ? (
+                        <div className="p-6 flex justify-center">
+                            <LoadingSpinner />
+                        </div>
+                    ) : logsError instanceof Error ? (
+                        <div className="p-6">
+                            <ErrorMessage message={getErrorMessage(logsError)} />
+                        </div>
+                    ) : logs.length === 0 ? (
                         <p className="text-gray-500">No logs yet</p>
                     ) : (
                             <Table headers={["Method", "Endpoint", "Status", "Latency", "Time"]}>
@@ -71,7 +78,32 @@ const DashboardPage = () => {
                         )
                     }
                 </Card>
-                
+                <Card title="Summary">
+                    {isSummaryLoading ? (
+                        <div className="p-6 flex justify-center">
+                            <LoadingSpinner />
+                        </div>
+                    ) : summaryError instanceof Error ? (
+                        <div className="p-6 flex justify-center">
+                            <ErrorMessage message={getErrorMessage(summaryError)}/>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-3 gap-4">
+                            <div>
+                                <p>Total Requests:</p>
+                                <p>{summary.totalRequests}</p>
+                            </div>
+                            <div>
+                                <p>Success Rate:</p>
+                                <p>{summary.successRate}</p>
+                            </div>
+                            <div>
+                                <p>Avg Latency:</p>
+                                <p>{summary.avgLatencyMs}</p>
+                            </div>
+                        </div>
+                    )}
+                </Card>
             </div>
         </div>
     )

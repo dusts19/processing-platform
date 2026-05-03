@@ -1,5 +1,7 @@
 package com.dustin.processingplatformbackend.analytics.service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -19,14 +21,32 @@ public class AnalyticsService {
 
     public AnalyticsSummaryDto getSummary(UUID id) {
         
-        Object[] result = requestLogRepository.getSummaryRaw(id);
+        List<Object[]> results = requestLogRepository.getSummaryRaw(id);
+        // System.out.println(Arrays.toString(result));
 
-        long totalRequests = (Long) result[0];
-        double avgLatency = result[1] != null ? (Double) result[1] : 0.0;
-        long successCount = (Long) result[2];
+        if (results.isEmpty()) {
+            return new AnalyticsSummaryDto(0, 0.0, 0.0);
+        }
+
+        Object[] result = results.get(0);
+
+        Number totalRequestsNum = (Number) result[0];
+        Number successCountNum = (Number) result[2];
+        
+        double avgLatency = result[1] != null 
+            ? ((Number) result[1]).doubleValue()
+            : 0.0;
+
+        long totalRequests = totalRequestsNum != null
+            ? totalRequestsNum.longValue()
+            : 0;
+
+        long successCount = successCountNum !=null
+            ? successCountNum.longValue()
+            : 0;
 
         double successRate = totalRequests > 0
-            ? (double) successCount / totalRequests
+            ? (double) successCount / totalRequests * 100
             : 0.0;
         
         return new AnalyticsSummaryDto(

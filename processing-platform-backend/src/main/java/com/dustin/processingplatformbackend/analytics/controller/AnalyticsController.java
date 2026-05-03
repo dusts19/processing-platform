@@ -14,7 +14,7 @@ import com.dustin.processingplatformbackend.security.model.AuthPrincipal;
 @RequestMapping("/api/analytics")
 public class AnalyticsController {
 
-    private AnalyticsService analyticsService;
+    private final AnalyticsService analyticsService;
 
     public AnalyticsController(AnalyticsService analyticsService) {
         this.analyticsService = analyticsService;

@@ -19,5 +19,5 @@ public interface RequestLogRepository extends JpaRepository<RequestLog, UUID> {
             FROM RequestLog r
             WHERE r.userId = :userId
             """)
-    Object[] getSummaryRaw(UUID userId);
+    List<Object[]> getSummaryRaw(UUID userId);
 }

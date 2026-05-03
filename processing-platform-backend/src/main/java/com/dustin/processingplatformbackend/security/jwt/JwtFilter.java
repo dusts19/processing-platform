@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.UUID;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +45,11 @@ public class JwtFilter extends OncePerRequestFilter{
         }
         
         Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (existingAuth != null) {
+        if (
+            existingAuth != null && 
+            existingAuth.isAuthenticated() && 
+            !(existingAuth instanceof AnonymousAuthenticationToken)
+        ) {
             filterChain.doFilter(request, response);
             return;
         }
