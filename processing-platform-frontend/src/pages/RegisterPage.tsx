@@ -4,6 +4,9 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../components/shared/apiError";
 import { ErrorMessage } from "../components/shared/ErrorMessage";
 import { useMutation } from "@tanstack/react-query";
+import { Card } from "../components/ui/Card";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
 
 
 const RegisterPage = () => {
@@ -37,7 +40,54 @@ const RegisterPage = () => {
 
     return (
         <div className="min-h-dvh flex items-center justify-center bg-gray-50">
-            <form 
+            <Card 
+                title="Register"
+                titleAlign="center"
+                className="w-full max-w-md"
+            >
+                <form
+                    onSubmit={handleSubmit} 
+                    className="space-y-4"
+                >
+                    <Input 
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="Email"
+                        label="Email"
+                        onChange={e => setEmail(e.target.value)}
+                        disabled={mutation.isPending}
+                        required
+                    />
+                    <Input 
+                        id="password" 
+                        type="password"
+                        name="password"
+                        value={password}
+                        placeholder="Password"
+                        label="Password"
+                        onChange={e => setPassword(e.target.value)}
+                        disabled={mutation.isPending}
+                        required 
+                    />
+                    <ErrorMessage message={getErrorMessage(mutation.error)} />
+                    <Button 
+                        type="submit" 
+                        isLoading={mutation.isPending}
+                        className="w-full"
+                    >
+                        Register
+                    </Button>
+                    <p className="text-sm text-center">
+                        Already have an account?{" "}
+                        <Link to="/login" className="text-blue-500">
+                            Login
+                        </Link>
+                    </p>
+                </form>
+            </Card>
+            {/* <form 
                 onSubmit={handleSubmit} 
                 className="bg-white p-6 rounded-lg shadow w-full max-w-md space-y-4"
                 >
@@ -74,7 +124,7 @@ const RegisterPage = () => {
                 </p>
                 
                 <ErrorMessage message={getErrorMessage(mutation.error)} />
-            </form>
+            </form> */}
         </div>
     )
 }
