@@ -1,6 +1,7 @@
 // import { useEffect, useState } from "react";
 import type { RequestLogResponse } from "../types/requestLogResponse";
-import { getAnalyticsSummary, getAnalyticsTimeseries, getRequestLogs } from "../api/dashboardApi";
+import { getAnalyticsSummary, getAnalyticsTimeseries } from "../api/analyticsApi";
+import { getRequestLogs } from "../api/requestLogApi";
 import { getErrorMessage } from "../components/shared/apiError";
 import { ErrorMessage } from "../components/shared/ErrorMessage";
 import { useQuery } from "@tanstack/react-query";
@@ -45,6 +46,11 @@ const DashboardPage = () => {
         queryFn: getAnalyticsTimeseries,
     })
 
+    // order:
+    //  Summary Card
+    //  Line Chart
+    //  Table
+    //  Logs Table
 
     return(
         <div className="p-6 w-full">
@@ -114,6 +120,13 @@ const DashboardPage = () => {
                         </div>
                     )}
                 </Card>
+
+                <Card title="Request Trends">
+                    <div>
+
+                    </div>
+                </Card>
+
                 <Card title="Timeseries Data">
                     {isTimeseriesLoading ? (
                         <div className="p-6 flex justify-center">
