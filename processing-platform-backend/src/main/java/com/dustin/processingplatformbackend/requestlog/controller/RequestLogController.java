@@ -27,7 +27,6 @@ public class RequestLogController {
     @GetMapping
     public ResponseEntity<List<RequestLogResponse>> getRequestLogs(@AuthenticationPrincipal AuthPrincipal principal) {
         List<RequestLogResponse> requestLogResponse = requestLogService.getRequestLogs(principal.userId());
-        System.out.println("logs Principal: " + principal);
         return ResponseEntity.ok(requestLogResponse);
     }
     

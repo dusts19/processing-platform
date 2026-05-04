@@ -1,12 +1,13 @@
 package com.dustin.processingplatformbackend.analytics.service;
 
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.dustin.processingplatformbackend.analytics.dto.AnalyticsSummaryDto;
+import com.dustin.processingplatformbackend.analytics.dto.AnalyticsTimeseriesDto;
 import com.dustin.processingplatformbackend.requestlog.repository.RequestLogRepository;
 
 @Service
@@ -54,5 +55,26 @@ public class AnalyticsService {
             successRate,
             avgLatency
         );
+    }
+
+    public List<AnalyticsTimeseriesDto> getTimeSeries(UUID id) {
+        List<Object[]> results = requestLogRepository.getTimeseriesRaw(id);
+
+        return results.stream().map((Object[] row) -> {
+            LocalDate seriesDate = ((java.sql.Date) row[0]).toLocalDate();
+            long total = ((Number) row[1]).longValue();
+            long success = ((Number) row[2]).longValue();
+
+            double avgLatency = row[3] != null
+                ? ((Number) row[3]).doubleValue()
+                : 0.0;
+            
+            return new AnalyticsTimeseriesDto(
+                seriesDate,
+                total,
+                success,
+                avgLatency
+            );
+        }).toList();
     }
 }

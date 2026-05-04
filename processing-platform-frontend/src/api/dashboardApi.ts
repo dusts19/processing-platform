@@ -21,3 +21,14 @@ export const getAnalyticsSummary = async () => {
     }
     return response.json();
 }
+
+export const getAnalyticsTimeseries = async () => {
+    const response = await apiClient("/analytics/timeseries",{
+        method: "GET",
+    })
+
+    if (!response.ok) {
+        throw new Error("Failed to get timeseries")
+    }
+    return response.json();
+}

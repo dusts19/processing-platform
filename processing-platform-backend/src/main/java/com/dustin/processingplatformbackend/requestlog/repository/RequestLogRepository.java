@@ -20,4 +20,19 @@ public interface RequestLogRepository extends JpaRepository<RequestLog, UUID> {
             WHERE r.userId = :userId
             """)
     List<Object[]> getSummaryRaw(UUID userId);
+
+    @Query("""
+            SELECT
+                CAST(r.createdAt AS DATE),
+                COUNT(r),
+                SUM(CASE WHEN r.statusCode BETWEEN 200 AND 299 THEN 1 ELSE 0 END),
+                AVG(r.latencyMs)
+            FROM RequestLog r
+            WHERE r.userId = :userId
+            GROUP BY CAST(r.createdAt AS DATE)
+            ORDER BY CAST(r.createdAt AS DATE)
+            """)
+    List<Object[]> getTimeseriesRaw(UUID userId);
 }
+
+

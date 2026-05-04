@@ -10,7 +10,7 @@ const Navbar = () => {
 
 
     return(
-        <aside className="w-64 bg-gray-800 text-white flex flex-col">
+        <aside className="w-64 bg-gray-800 text-white flex flex-col h-full sticky top-0">
             <div className="p-6 text-2xl font-bold border-b border-gray-700">NAVBAR</div>
             <nav className="grow p-4 space-y-2">
                 <Link to="/dashboard" className="block px-4 py-2 rounded hover:bg-gray-700">Dashboard</Link>

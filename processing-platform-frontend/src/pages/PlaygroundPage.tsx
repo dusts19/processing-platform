@@ -68,16 +68,16 @@ const PlaygroundPage = () => {
                 <Card title="Response">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                            <strong>Length:</strong>{response.length}
+                            <strong>Length:{" "}</strong>{response.length}
                         </div>
                         <div>
-                            <strong>Word Count:</strong>{response.wordCount}
+                            <strong>Word Count:{" "}</strong>{response.wordCount}
                         </div>
                         <div className="col-span-2 break-all">
-                            <strong>Uppercase:</strong>{response.uppercase}
+                            <strong>Uppercase:{" "}</strong>{response.uppercase}
                         </div>
                         <div>
-                            <strong>Latency:</strong>{response.processingTimeMs} ms
+                            <strong>Latency:{" "}</strong>{response.processingTimeMs.toFixed(2)} ms
                         </div>
                     </div>
                 </Card>

@@ -3,9 +3,9 @@ import Navbar from "./Navbar";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
     return(
-        <div className="flex bg-gray-50 min-h-dvh">
+        <div className="flex bg-gray-50 h-dvh">
             <Navbar />
-            <main className="flex-1 p-6 overflow-x-hidden">
+            <main className="flex-1 p-6 overflow-x-hidden overflow-y-auto">
                 <div className="max-w-5xl mx-auto">
                     {children}
                 </div>
