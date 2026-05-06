@@ -7,13 +7,14 @@
 // import { useQuery } from "@tanstack/react-query";
 // import LoadingSpinner from "../components/shared/LoadingSpinner";
 // import { Table } from "../components/ui/Table";
-import { Card } from "../components/ui/Card";
+// import { Card } from "../components/ui/Card";
 // import type { AnalyticsSummaryResponse } from "../features/dashboard/analytics/types/analyticsSummaryResponse";
 // import type { AnalyticsTimeseriesResponse } from "../features/dashboard/analytics/types/analyticsTimeseriesResponse";
 import { RequestLogsTable } from "../features/dashboard/requestlogs/components/RequestLogsTable";
 // import { getAnalyticsTimeseries } from "../features/dashboard/analytics/api/analyticsApi";
 import { SummaryCards } from "../features/dashboard/analytics/components/SummaryCards";
 import { TimeseriesTable } from "../features/dashboard/analytics/components/TimeseriesTable";
+import { TimeseriesChart } from "../features/dashboard/analytics/components/TimeseriesChart";
 
 
 const DashboardPage = () => {
@@ -62,7 +63,9 @@ const DashboardPage = () => {
                 <h1 className="text-2xl font-semibold">Dashboard</h1>
                 <SummaryCards />
                 <RequestLogsTable/>
+                <TimeseriesChart />
                 <TimeseriesTable />
+
                 {/* <Card title="Request Logs">
                     {isLogsLoading ? (
                         <div className="p-6 flex justify-center">
@@ -127,12 +130,12 @@ const DashboardPage = () => {
                         </div>
                     )}
                 </Card> */}
-
+{/* 
                 <Card title="Request Trends">
                     <div>
 
                     </div>
-                </Card>
+                </Card> */}
 
                 {/* <Card title="Timeseries Data">
                     {isTimeseriesLoading ? (

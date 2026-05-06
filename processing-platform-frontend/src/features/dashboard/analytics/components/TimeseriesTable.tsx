@@ -9,34 +9,45 @@ import type { AnalyticsTimeseriesResponse } from "../types/analyticsTimeseriesRe
 export const TimeseriesTable = () => {
     const {
         data: timeseries = [],
-        isLoading: isTimeseriesLoading,
-        error: timeseriesError,
+        isLoading,
+        isError,
+        error,
     } = useAnalyticsTimeseries();
 
+    
+    if (isLoading){
+        return (
+            <Card title="summary">
+                <div className="p-6 flex justify-center">
+                    <LoadingSpinner />
+                </div>
+            </Card>
+        )
+    }
+    if (isError) {
+        return (
+            <Card title="summary">
+                <div className="p-6 flex justify-center">
+                    <ErrorMessage message={getErrorMessage(error)}/>
+                </div>
+            </Card>
+        )
+    }
 
     return(
         <Card title="Timeseries Data">
-                    {isTimeseriesLoading ? (
-                        <div className="p-6 flex justify-center">
-                            <LoadingSpinner/>
-                        </div>
-                    ) : timeseriesError instanceof Error ? (
-                        <div className="p-6">
-                            <ErrorMessage message={getErrorMessage(timeseriesError)}/>
-                        </div>
-                    ) : (
-                        <Table headers={["Date", "Requests", "Success", "Avg Latency"]}>
-                            {timeseries && timeseries.map((d:AnalyticsTimeseriesResponse)=> (
-                                <tr key={d.seriesDate.toString()} className="border-t hover:bg-gray-50">
-                                        <td className="p-3 text-sm">{new Date(d.seriesDate).toLocaleDateString()}</td>
-                                        <td className="p-3 text-sm">{d.requestCount}</td>
-                                        <td className="p-3 text-sm text-green-600">{d.successCount}</td>
-                                        <td className="p-3 text-sm">{d.avgLatency.toFixed(2)} ms</td>
-                                </tr>
-                            ))}
-                                
-                        </Table>)
-                    }
-                </Card>
+            <Table headers={["Date", "Requests", "Success", "Avg Latency"]}>
+                {timeseries && timeseries.map((d:AnalyticsTimeseriesResponse)=> (
+                    <tr key={d.seriesDate.toString()} className="border-t hover:bg-gray-50">
+                            <td className="p-3 text-sm">{new Date(d.seriesDate).toLocaleDateString()}</td>
+                            <td className="p-3 text-sm">{d.requestCount}</td>
+                            <td className="p-3 text-sm text-green-600">{d.successCount}</td>
+                            <td className="p-3 text-sm">{d.avgLatency.toFixed(2)} ms</td>
+                    </tr>
+                ))}
+                    
+            </Table>
+            
+        </Card>
     )
 }

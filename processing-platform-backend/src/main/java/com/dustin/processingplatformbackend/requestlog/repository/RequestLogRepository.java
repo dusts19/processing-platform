@@ -3,13 +3,18 @@ package com.dustin.processingplatformbackend.requestlog.repository;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.dustin.processingplatformbackend.requestlog.model.RequestLog;
+import com.dustin.processingplatformbackend.requestlog.model.RequestStatus;
 
 public interface RequestLogRepository extends JpaRepository<RequestLog, UUID> {
-    List<RequestLog> findByUserIdOrderByCreatedAtDesc(UUID userId);
+    Page<RequestLog> findByUserId(UUID userId, Pageable pageable);
+    Page<RequestLog> findByUserIdAndStatus(UUID userId, RequestStatus status, Pageable pageable);
+    // List<RequestLog> findByUserIdOrderByCreatedAtDesc(UUID userId);
 
     @Query("""
             SELECT 

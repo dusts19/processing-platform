@@ -19,6 +19,7 @@ export const SummaryCards = () => {
     const {
         data,
         isLoading,
+        isError,
         error,
     } = useAnalyticsSummary();
 
@@ -31,7 +32,7 @@ export const SummaryCards = () => {
             </Card>
         )
     }
-    if (error instanceof Error) {
+    if (isError) {
         return (
             <Card title="summary">
                 <div className="p-6 flex justify-center">

@@ -28,17 +28,17 @@ export const ApiKeysList = () => {
     
     if (isLoading) {
         return(
-            <div className="flex p-6 justify-center">
+            <Card className="flex p-6 justify-center">
                 <LoadingSpinner />
-            </div>
+            </Card>
         )
     }
 
     if (isError) {
         return(
-            <div className="flex p-6 justify-center">
+            <Card className="flex p-6 justify-center">
                 <ErrorMessage message={getErrorMessage(error)} />
-            </div>
+            </Card>
         )
     }
 
