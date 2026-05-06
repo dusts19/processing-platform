@@ -1,63 +1,66 @@
-import { useState } from "react";
-import type { ApiKeyResponse } from "../types/apiKeyResponse";
-import { createApiKey, deleteApiKey, getApiKeys } from "../api/apiKeyApi";
-import { getErrorMessage } from "../components/shared/apiError";
-import { ErrorMessage } from "../components/shared/ErrorMessage";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { Card } from "../components/ui/Card";
-import Button from "../components/ui/Button";
-import LoadingSpinner from "../components/shared/LoadingSpinner";
+// import { useState } from "react";
+// import type { ApiKeyResponse } from "../features/apiKeys/types/apiKeyResponse";
+// import { deleteApiKey, getApiKeys } from "../features/apiKeys/api/apiKeyApi";
+// import { getErrorMessage } from "../components/shared/apiError";
+// import { ErrorMessage } from "../components/shared/ErrorMessage";
+// import { useMutation, useQuery } from "@tanstack/react-query";
+// import { useQueryClient } from "@tanstack/react-query";
+// import { Card } from "../components/ui/Card";
+// import Button from "../components/ui/Button";
+// import LoadingSpinner from "../components/shared/LoadingSpinner";
+import CreateApiKeyCard from "../features/apiKeys/components/CreateApiKeyCard";
+import { ApiKeysList } from "../features/apiKeys/components/ApiKeysList";
 
 const ApiKeysPage = () =>{
-    const queryClient = useQueryClient();
-    const [newKey, setNewKey] = useState<string | null>(null);
+    // const queryClient = useQueryClient();
+    // const [newKey, setNewKey] = useState<string | null>(null);
 
 
-    const {
-        data: apiKeys = [],
-        isLoading,
-        error: queryError,
-    } = useQuery<ApiKeyResponse[]>({
-        queryKey: ['apiKeys'],
-        queryFn: getApiKeys,
-    })
+    // const createMutation = useMutation({
+    //     mutationFn: createApiKey,
+    //     onSuccess: (newApiKey) => {
+    //         setNewKey(newApiKey.key);
+    //         queryClient.invalidateQueries({ queryKey: ['apiKeys']});
+    //     },
+    // })
 
-    const createMutation = useMutation({
-        mutationFn: createApiKey,
-        onSuccess: (newApiKey) => {
-            setNewKey(newApiKey.key);
-            queryClient.invalidateQueries({ queryKey: ['apiKeys']});
-        },
-    })
+    // const {
+    //     data: apiKeys = [],
+    //     isLoading,
+    //     error: queryError,
+    // } = useQuery<ApiKeyResponse[]>({
+    //     queryKey: ['apiKeys'],
+    //     queryFn: getApiKeys,
+    // })
     
-    const deleteMutation = useMutation({
-        mutationFn: deleteApiKey,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["apiKeys"] });
-        },
-    })
+    // const deleteMutation = useMutation({
+    //     mutationFn: deleteApiKey,
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries({ queryKey: ["apiKeys"] });
+    //     },
+    // })
 
-    if (isLoading) {
-        return (
-            <div className="p-6 flex justify-center">
-                <LoadingSpinner />
-            </div>
-        )
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="p-6 flex justify-center">
+    //             <LoadingSpinner />
+    //         </div>
+    //     )
+    // }
 
-    const errorMessage = 
-        getErrorMessage(queryError) ||
-        getErrorMessage(createMutation.error) ||
-        getErrorMessage(deleteMutation.error);
+    // const errorMessage = 
+    //     getErrorMessage(queryError) ||
+    //     // getErrorMessage(createMutation.error) ||
+    //     getErrorMessage(deleteMutation.error);
 
     return (
         <div className="space-y-6">
             <h1 className="text-2xl font-semibold">API Keys</h1>
 
-            <ErrorMessage message={errorMessage} />
+            {/* <ErrorMessage message={errorMessage} /> */}
 
-            <Card title="Create API key">
+            <CreateApiKeyCard />
+            {/* <Card title="Create API key">
                 <Button 
                     onClick={() => createMutation.mutate()}
                     isLoading={createMutation.isPending}
@@ -92,9 +95,10 @@ const ApiKeysPage = () =>{
                         </div>
                     </div>
                 )}
-            </Card>
+            </Card> */}
 
-            <Card title="Your API Keys">
+            <ApiKeysList />
+            {/* <Card title="Your API Keys">
                 {apiKeys.length === 0 ? (
                     <p className="p-4 text-gray-500">No API keys yet</p>
                 ) : (
@@ -117,7 +121,7 @@ const ApiKeysPage = () =>{
                         ))}
                     </ul>
                 )}
-            </Card>
+            </Card> */}
         </div>
     )
 }

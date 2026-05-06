@@ -1,50 +1,54 @@
 // import { useEffect, useState } from "react";
-import type { RequestLogResponse } from "../types/requestLogResponse";
-import { getAnalyticsSummary, getAnalyticsTimeseries } from "../api/analyticsApi";
-import { getRequestLogs } from "../api/requestLogApi";
-import { getErrorMessage } from "../components/shared/apiError";
-import { ErrorMessage } from "../components/shared/ErrorMessage";
-import { useQuery } from "@tanstack/react-query";
-import LoadingSpinner from "../components/shared/LoadingSpinner";
-import { Table } from "../components/ui/Table";
+// import type { RequestLogResponse } from "../features/dashboard/requestlogs/types/requestLogResponse";
+// import { getAnalyticsSummary, getAnalyticsTimeseries } from "../api/analyticsApi";
+// import { getRequestLogs } from "../api/requestLogApi";
+// import { getErrorMessage } from "../components/shared/apiError";
+// import { ErrorMessage } from "../components/shared/ErrorMessage";
+// import { useQuery } from "@tanstack/react-query";
+// import LoadingSpinner from "../components/shared/LoadingSpinner";
+// import { Table } from "../components/ui/Table";
 import { Card } from "../components/ui/Card";
-import type { AnalyticsSummaryResponse } from "../types/analyticsSummaryResponse";
-import type { AnalyticsTimeseriesResponse } from "../types/analyticsTimeseriesResponse";
+// import type { AnalyticsSummaryResponse } from "../features/dashboard/analytics/types/analyticsSummaryResponse";
+// import type { AnalyticsTimeseriesResponse } from "../features/dashboard/analytics/types/analyticsTimeseriesResponse";
+import { RequestLogsTable } from "../features/dashboard/requestlogs/components/RequestLogsTable";
+// import { getAnalyticsTimeseries } from "../features/dashboard/analytics/api/analyticsApi";
+import { SummaryCards } from "../features/dashboard/analytics/components/SummaryCards";
+import { TimeseriesTable } from "../features/dashboard/analytics/components/TimeseriesTable";
 
 
 const DashboardPage = () => {
     
-    const {
-        data: logs = [],
-        isLoading: isLogsLoading,
-        error: logsError,
-    } = useQuery<RequestLogResponse[]>({
-        queryKey: ['requestLogs'],
-        queryFn: getRequestLogs,
-        // refetchInterval: 5000,
-    })
+    // const {
+    //     data: logs = [],
+    //     isLoading: isLogsLoading,
+    //     error: logsError,
+    // } = useQuery<RequestLogResponse[]>({
+    //     queryKey: ['requestLogs'],
+    //     queryFn: getRequestLogs,
+    //     // refetchInterval: 5000,
+    // })
 
-    const {
-        data: summary = {
-            totalRequests: 0,
-            successRate: 0,
-            avgLatencyMs: 0,
-        },
-        isLoading: isSummaryLoading,
-        error: summaryError,
-    } = useQuery<AnalyticsSummaryResponse>({
-        queryKey:['analyticsSummary'],
-        queryFn: getAnalyticsSummary,
-    })
+    // const {
+    //     data: summary = {
+    //         totalRequests: 0,
+    //         successRate: 0,
+    //         avgLatencyMs: 0,
+    //     },
+    //     isLoading: isSummaryLoading,
+    //     error: summaryError,
+    // } = useQuery<AnalyticsSummaryResponse>({
+    //     queryKey:['analyticsSummary'],
+    //     queryFn: getAnalyticsSummary,
+    // })
 
-    const {
-        data: timeseries = [],
-        isLoading: isTimeseriesLoading,
-        error: timeseriesError,
-    } = useQuery<AnalyticsTimeseriesResponse[]>({
-        queryKey: ['analyticsTimeseries'],
-        queryFn: getAnalyticsTimeseries,
-    })
+    // const {
+    //     data: timeseries = [],
+    //     isLoading: isTimeseriesLoading,
+    //     error: timeseriesError,
+    // } = useQuery<AnalyticsTimeseriesResponse[]>({
+    //     queryKey: ['analyticsTimeseries'],
+    //     queryFn: getAnalyticsTimeseries,
+    // })
 
     // order:
     //  Summary Card
@@ -56,7 +60,10 @@ const DashboardPage = () => {
         <div className="p-6 w-full">
             <div className="space-y-6">
                 <h1 className="text-2xl font-semibold">Dashboard</h1>
-                <Card title="Request Logs">
+                <SummaryCards />
+                <RequestLogsTable/>
+                <TimeseriesTable />
+                {/* <Card title="Request Logs">
                     {isLogsLoading ? (
                         <div className="p-6 flex justify-center">
                             <LoadingSpinner />
@@ -93,8 +100,8 @@ const DashboardPage = () => {
                             </Table>
                         )
                     }
-                </Card>
-                <Card title="Summary">
+                </Card> */}
+                {/* <Card title="Summary">
                     {isSummaryLoading ? (
                         <div className="p-6 flex justify-center">
                             <LoadingSpinner />
@@ -119,7 +126,7 @@ const DashboardPage = () => {
                             </div>
                         </div>
                     )}
-                </Card>
+                </Card> */}
 
                 <Card title="Request Trends">
                     <div>
@@ -127,7 +134,7 @@ const DashboardPage = () => {
                     </div>
                 </Card>
 
-                <Card title="Timeseries Data">
+                {/* <Card title="Timeseries Data">
                     {isTimeseriesLoading ? (
                         <div className="p-6 flex justify-center">
                             <LoadingSpinner/>
@@ -149,9 +156,7 @@ const DashboardPage = () => {
                                 
                         </Table>)
                     }
-                    
-
-                </Card>
+                </Card> */}
             </div>
         </div>
     )
