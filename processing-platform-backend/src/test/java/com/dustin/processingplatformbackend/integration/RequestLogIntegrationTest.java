@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.dustin.processingplatformbackend.apikey.dto.ApiKeyResponse;
+import com.dustin.processingplatformbackend.dto.PageResponse;
 import com.dustin.processingplatformbackend.process.dto.ProcessRequest;
 import com.dustin.processingplatformbackend.requestlog.dto.RequestLogResponse;
 import com.dustin.processingplatformbackend.requestlog.model.RequestStatus;
@@ -92,8 +93,11 @@ public class RequestLogIntegrationTest {
             
         // })
         // List<RequestLogResponse> logs = jsonMapper.readValue(requestLogResponseBody, );
-        List<RequestLogResponse> logs = jsonMapper.readValue(requestLogResponseBody, new TypeReference<List<RequestLogResponse>>() {});
+        PageResponse<RequestLogResponse> page = jsonMapper.readValue(requestLogResponseBody, new TypeReference<PageResponse<RequestLogResponse>>() {});
         
+        List<RequestLogResponse> logs = page.content;
+
+        assertThat(logs).isNotEmpty();
         RequestLogResponse requestLogResponse = logs.get(0);
 
         int processStatus = processResult.getResponse().getStatus();
@@ -113,3 +117,4 @@ public class RequestLogIntegrationTest {
         
     }
 }
+

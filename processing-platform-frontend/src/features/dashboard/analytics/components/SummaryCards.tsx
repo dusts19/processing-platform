@@ -25,7 +25,7 @@ export const SummaryCards = () => {
 
     if (isLoading){
         return (
-            <Card title="summary">
+            <Card title="Summary">
                 <div className="p-6 flex justify-center">
                     <LoadingSpinner />
                 </div>
@@ -34,7 +34,7 @@ export const SummaryCards = () => {
     }
     if (isError) {
         return (
-            <Card title="summary">
+            <Card title="Summary">
                 <div className="p-6 flex justify-center">
                     <ErrorMessage message={getErrorMessage(error)}/>
                 </div>
