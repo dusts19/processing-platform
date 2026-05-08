@@ -121,7 +121,7 @@ const DashboardPage = () => {
                             </div>
                             <div>
                                 <p>Success Rate:</p>
-                                <p>{summary.successRate} %</p>
+                                <p>{summary.successRatePercentage} %</p>
                             </div>
                             <div>
                                 <p>Avg Latency:</p>

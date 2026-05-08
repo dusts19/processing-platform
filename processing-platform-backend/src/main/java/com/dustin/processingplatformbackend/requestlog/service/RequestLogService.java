@@ -61,7 +61,7 @@ public class RequestLogService {
             log.getStatusCode(),
             log.getStatus(),
             log.getLatencyMs(),
-            log.getCreatedAt().toString()
+            log.getCreatedAt()
         ));
     }
 }

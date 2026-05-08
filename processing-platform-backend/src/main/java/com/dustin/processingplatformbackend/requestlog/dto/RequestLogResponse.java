@@ -1,5 +1,6 @@
 package com.dustin.processingplatformbackend.requestlog.dto;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import com.dustin.processingplatformbackend.requestlog.model.RequestStatus;
@@ -11,6 +12,6 @@ public record RequestLogResponse(
     int statusCode,
     RequestStatus status,
     long latencyMs,
-    String createdAt
+    Instant createdAt
 
 ) {}

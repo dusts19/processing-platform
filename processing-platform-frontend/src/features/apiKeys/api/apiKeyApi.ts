@@ -1,7 +1,8 @@
 import { apiClient } from "../../../api/client";
+import type { ApiKeyResponse } from "../types/apiKeyResponse";
 
 
-export const createApiKey = async () => {
+export const createApiKey = async (): Promise<ApiKeyResponse> => {
 
     const response = await apiClient("/api-keys", {
         method: "POST",
@@ -13,7 +14,7 @@ export const createApiKey = async () => {
     return response.json();
 }
 
-export const getApiKeys = async () => {
+export const getApiKeys = async (): Promise<ApiKeyResponse[]> => {
     const response = await apiClient(
         "/api-keys",
         {

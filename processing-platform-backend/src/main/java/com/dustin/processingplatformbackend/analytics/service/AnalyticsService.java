@@ -13,7 +13,7 @@ import com.dustin.processingplatformbackend.requestlog.repository.RequestLogRepo
 @Service
 public class AnalyticsService {
 
-    private RequestLogRepository requestLogRepository;
+    private final RequestLogRepository requestLogRepository;
 
     public AnalyticsService(RequestLogRepository requestLogRepository){
         this.requestLogRepository = requestLogRepository;

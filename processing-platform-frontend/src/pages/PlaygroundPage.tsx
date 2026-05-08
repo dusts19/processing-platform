@@ -1,29 +1,29 @@
 import { useState } from "react";
-import { processInput } from "../api/playgroundApi";
-import type { ProcessResponse } from "../types/processResponse";
+// import { processInput } from "../features/process/api/processApi";
+// import type { ProcessResponse } from "../features/process/types/processResponse";
 import { getErrorMessage } from "../components/shared/apiError";
 import { ErrorMessage } from "../components/shared/ErrorMessage";
-import { useMutation } from "@tanstack/react-query";
+// import { useMutation } from "@tanstack/react-query";
 import { Card } from "../components/ui/Card";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import { useProcess } from "../features/process/hooks/useProcess";
+import { ProcessResultCard } from "../features/process/components/ProcessResultCard";
 
 
 const PlaygroundPage = () => {
     const [input, setInput] = useState("");
     const [apiKey, setApiKey] = useState("");
-    const [response, setResponse] = useState<ProcessResponse | null>(null);
-
-    const mutation = useMutation({
-        mutationFn: ({input, apiKey} : {input: string, apiKey: string}) => 
-            processInput(input, apiKey),
-        onSuccess: (data) => {
-            setResponse(data);
-            setInput("");
-        },
-    });
     
-    const handleSubmit = async (e : React.SubmitEvent<HTMLFormElement>) => {
+    const mutation = useProcess({
+        onSuccess: () => {
+            setInput("");
+            setApiKey("");
+        }
+    });
+    const processResult = mutation.data;
+    
+    const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         mutation.mutate({ input, apiKey });
 
@@ -57,30 +57,40 @@ const PlaygroundPage = () => {
                     <Button
                         type="submit" 
                         isLoading={mutation.isPending}
+                        disabled={!input.trim() || !apiKey.trim()}
                     >
                         Submit
                     </Button>
                 </form>
-                <ErrorMessage message={getErrorMessage(mutation.error)} />
+                {mutation.isError && (
+                    <ErrorMessage message={getErrorMessage(mutation.error)} />
+                )}
             </Card>
-            
-            {response && (
+
+            {mutation.isPending && (
                 <Card title="Response">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <strong>Length:{" "}</strong>{response.length}
-                        </div>
-                        <div>
-                            <strong>Word Count:{" "}</strong>{response.wordCount}
-                        </div>
-                        <div className="col-span-2 break-all">
-                            <strong>Uppercase:{" "}</strong>{response.uppercase}
-                        </div>
-                        <div>
-                            <strong>Latency:{" "}</strong>{response.processingTimeMs.toFixed(2)} ms
-                        </div>
-                    </div>
+                    <p className="text-gray-500 p-4">Processing...</p>
                 </Card>
+            )}
+            
+            {processResult && (
+                <ProcessResultCard result={processResult}/>
+                // <Card title="Response">
+                //     <div className="grid grid-cols-2 gap-4 text-sm">
+                //         <div>
+                //             <strong>Length:{" "}</strong>{processResult.length}
+                //         </div>
+                //         <div>
+                //             <strong>Word Count:{" "}</strong>{processResult.wordCount}
+                //         </div>
+                //         <div className="col-span-2 break-all">
+                //             <strong>Uppercase:{" "}</strong>{processResult.uppercase}
+                //         </div>
+                //         <div>
+                //             <strong>Latency:{" "}</strong>{processResult.processingTimeMs.toFixed(2) ?? "0.0"} ms
+                //         </div>
+                //     </div>
+                // </Card>
             )}
             
             
