@@ -4,11 +4,12 @@ import LoadingSpinner from "../../../../components/shared/LoadingSpinner";
 import { Card } from "../../../../components/ui/Card"
 import { Table } from "../../../../components/ui/Table";
 import { useAnalyticsTimeseries } from "../hooks/useAnalyticsTimeseries"
-import type { AnalyticsTimeseriesResponse } from "../types/analyticsTimeseriesResponse";
+// import type { AnalyticsTimeseriesResponse } from "../types/analyticsTimeseriesResponse";
+import { selectTableData } from "../types/analyticsTimeseriesSelector";
 
 export const TimeseriesTable = () => {
     const {
-        data: timeseries = [],
+        data,
         isLoading,
         isError,
         error,
@@ -17,7 +18,7 @@ export const TimeseriesTable = () => {
     
     if (isLoading){
         return (
-            <Card title="summary">
+            <Card title="Timeseries Data">
                 <div className="p-6 flex justify-center">
                     <LoadingSpinner />
                 </div>
@@ -26,7 +27,7 @@ export const TimeseriesTable = () => {
     }
     if (isError) {
         return (
-            <Card title="summary">
+            <Card title="Timeseries Data">
                 <div className="p-6 flex justify-center">
                     <ErrorMessage message={getErrorMessage(error)}/>
                 </div>
@@ -34,15 +35,17 @@ export const TimeseriesTable = () => {
         )
     }
 
+    const tableData = selectTableData(data ?? []);
+
     return(
         <Card title="Timeseries Data">
             <Table headers={["Date", "Requests", "Success", "Avg Latency"]}>
-                {timeseries && timeseries.map((d:AnalyticsTimeseriesResponse)=> (
-                    <tr key={d.seriesDate.toString()} className="border-t hover:bg-gray-50">
-                            <td className="p-3 text-sm">{new Date(d.seriesDate).toLocaleDateString()}</td>
-                            <td className="p-3 text-sm">{d.requestCount}</td>
-                            <td className="p-3 text-sm text-green-600">{d.successCount}</td>
-                            <td className="p-3 text-sm">{d.avgLatency.toFixed(2)} ms</td>
+                {tableData.map((row)=> (
+                    <tr key={row.formattedDate} className="border-t hover:bg-gray-50">
+                            <td className="p-3 text-sm">{row.formattedDate}</td>
+                            <td className="p-3 text-sm">{row.requestCount}</td>
+                            <td className="p-3 text-sm text-green-600">{row.successCount}</td>
+                            <td className="p-3 text-sm">{row.avgLatency.toFixed(2)} ms</td>
                     </tr>
                 ))}
                     
