@@ -4,18 +4,22 @@ export const getRequestLogs = async ({
     page,
     size,
     status,
+    sort,
 }: {
     page: number;
     size: number;
-    status: string;
+    status?: string;
+    sort: string;
 }) => {
-    const params = new URLSearchParams({
-        page: page.toString(),
-        size: size.toString(),
-    });
+    const params = new URLSearchParams();
+
+    params.set("page", page.toString());
+    params.set("size", size.toString());
+    params.set("sort", sort);
+    
 
     if (status) {
-        params.append("status", status);
+        params.set("status", status);
     }
 
     const response = await apiClient(`/requests?${params.toString()}`,{

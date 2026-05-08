@@ -12,13 +12,15 @@ import { useState } from "react"
 export const RequestLogsTable = () => {
     const [page, setPage] = useState(0);
     const [status, setStatus] = useState("");
+    const [sort, setSort] = useState("createdAt,desc");
     
     const {
         data,
         isLoading,
+        isFetching,
         isError,
         error,
-    } = useRequestLogs(page, status);
+    } = useRequestLogs(page, status, sort);
     
     const logs = data?.content ?? [];
     const totalPages = data?.totalPages ?? 0;
@@ -48,66 +50,93 @@ export const RequestLogsTable = () => {
 
     return (
         <Card title="Request Logs">
-            {isEmpty ?(
+            {isEmpty ? (
                 <p className="p-4 text-gray-500">No request logs yet</p>
             ) : (
-                <Table headers={["Method", "Endpoint", "Status", "Latency", "Time"]}>
-                    {logs.map((log: RequestLogResponse) => (
-                        <tr  
-                            className="border-t hover:bg-gray-50" 
-                            key={log.id}
+                <>
+                    <div className="flex gap-4 items-center mb-4">
+                        <select
+                            value={sort}
+                            disabled={isFetching}
+                            onChange={(e) => {
+                                setSort(e.target.value);
+                                setPage(0);
+                            }}
+                            className="border p-2 rounded"
                         >
-                            <td className="p-3 text-sm">{log.httpMethod}</td>
-                            <td className="p-3 text-sm">{log.endpoint}</td>
-                            <td className={`p-3 text-sm ${
-                                    log.statusCode >= 400 ? "text-red-500" : "text-green-600" 
-                                }`}
+                            <option value="createdAt,desc">Newest first</option>
+                            <option value="createdAt,asc">Oldest first</option>
+                        </select>
+                        <select
+                            value={status ?? ""}
+                            disabled={isFetching}
+                            onChange={(e) => {
+                                setStatus(e.target.value)
+                                setPage(0);
+                            }}
+                            className="border p-2 rounded"
+                        >
+                            <option value="">All</option>
+                            <option value="SUCCESS">Success</option>
+                            <option value="ERROR">Error</option>
+                        </select>
+                        {isFetching && (
+                            <span className="text-xs text-gray-400 ml-2 animate-pulse">
+                                Updating...
+                            </span>
+                        )}
+                    </div>
+                    <Table headers={["Method", "Endpoint", "Status", "Latency", "Time"]}>
+                        {logs.map((log: RequestLogResponse) => (
+                            <tr  
+                                className="border-t hover:bg-gray-50" 
+                                key={log.id}
                             >
-                                {log.statusCode} - {log.status}
-                            </td>
-                            <td className="p-3 text-sm">{log.latencyMs.toFixed(2)} ms</td>
-                            <td className="p-3 text-sm">
-                                {log.createdAt
-                                ? new Date(log.createdAt).toLocaleDateString()
-                                : "---"}
-                            </td>
-                        </tr>
-                    ))}
-                </Table>
+                                <td className="p-3 text-sm">{log.httpMethod}</td>
+                                <td className="p-3 text-sm">{log.endpoint}</td>
+                                <td className={`p-3 text-sm ${
+                                        log.statusCode >= 400 ? "text-red-500" : "text-green-600" 
+                                    }`}
+                                >
+                                    {log.statusCode} - {log.status}
+                                </td>
+                                <td className="p-3 text-sm">{log.latencyMs.toFixed(2)} ms</td>
+                                <td className="p-3 text-sm">
+                                    {log.createdAt
+                                    ? new Date(log.createdAt).toLocaleDateString()
+                                    : "---"}
+                                </td>
+                            </tr>
+                        ))}
+                    </Table>
+                </>
             )}
             
-            <div className="flex items-center justify-between mt-4">
-                <Button
-                    disabled={page === 0 || !hasPages}
-                    onClick={() =>setPage((p) => p - 1)}
-                >
-                    Previous
-                </Button>
-                
-                <span>
-                    Page {hasPages ? page + 1 : 0} of {totalPages}
-                </span>
-                
-                <Button 
-                    disabled={!hasPages || page + 1 >= totalPages}
-                    onClick={() =>setPage((p) => p + 1)}
-                >
-                    Next
-                </Button>
-            </div>
-            <div className="mt-4">
-                <select
-                    value={status ?? ""}
-                    onChange={(e) => {
-                        setStatus(e.target.value)
-                        setPage(0);
-                    }}
-                >
-                    <option value="">All</option>
-                    <option value="SUCCESS">Success</option>
-                    <option value="ERROR">Error</option>
-                </select>
-            </div>
+            {!isEmpty && (
+                <div className="flex items-center justify-between mt-4">
+                    <Button
+                        disabled={page === 0 || !hasPages || isFetching}
+                        onClick={() =>setPage((p) => p - 1)}
+                    >
+                        Previous
+                    </Button>
+                    
+                    {hasPages ? (
+                        <span>
+                            Page {page + 1} of {totalPages}
+                        </span>
+                    ) : (
+                        <span>No pages</span>
+                    )}
+                    
+                    <Button 
+                        disabled={!hasPages || page + 1 >= totalPages || isFetching}
+                        onClick={() =>setPage((p) => p + 1)}
+                    >
+                        Next
+                    </Button>
+                </div>
+            )}
         </Card>
     )
 }

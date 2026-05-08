@@ -28,7 +28,7 @@ export const ApiKeysList = () => {
     
     if (isLoading) {
         return(
-            <Card className="flex p-6 justify-center">
+            <Card title="Your API Keys" className="flex p-6 justify-center">
                 <LoadingSpinner />
             </Card>
         )
@@ -36,7 +36,7 @@ export const ApiKeysList = () => {
 
     if (isError) {
         return(
-            <Card className="flex p-6 justify-center">
+            <Card title="Your API Keys" className="flex p-6 justify-center">
                 <ErrorMessage message={getErrorMessage(error)} />
             </Card>
         )

@@ -23,9 +23,9 @@ const CreateApiKeyCard = () => {
 
     if (createMutation.isError) {
         return (
-            <div className="p-6 flex justify-center">
+            <Card title="Create API key" className="p-6 flex justify-center">
                 <ErrorMessage message={getErrorMessage(createMutation.error)} />
-            </div>
+            </Card>
         )
     }
     

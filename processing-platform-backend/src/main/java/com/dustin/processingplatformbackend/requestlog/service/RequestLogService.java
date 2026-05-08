@@ -43,12 +43,9 @@ public class RequestLogService {
 
     public Page<RequestLogResponse> getRequestLogs(
         UUID userId,
-        int page,
-        int size,
+        Pageable pageable,
         RequestStatus status
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        
         Page<RequestLog> logsPage;
 
         if (status != null) {
@@ -66,19 +63,5 @@ public class RequestLogService {
             log.getLatencyMs(),
             log.getCreatedAt().toString()
         ));
-        
-        // List<RequestLog> requestLogs = requestLogRepository.findByUserIdOrderByCreatedAtDesc(userId);
-
-        // return requestLogs.stream()
-        //     .map(log -> new RequestLogResponse(
-        //         log.getId(),
-        //         log.getHttpMethod().name(),
-        //         log.getEndpoint(),
-        //         log.getStatusCode(),
-        //         log.getStatus(),
-        //         log.getLatencyMs(),
-        //         log.getCreatedAt().toString()
-        //     ))
-        //     .toList();
     }
 }
