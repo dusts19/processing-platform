@@ -1,4 +1,6 @@
 import { apiClient } from "../../../../api/client";
+import type { PaginatedResponse } from "../types/paginatedResponse";
+import type { RequestLogResponse } from "../types/requestLogResponse";
 
 export const getRequestLogs = async ({
     page,
@@ -10,7 +12,7 @@ export const getRequestLogs = async ({
     size: number;
     status?: string;
     sort: string;
-}) => {
+}): Promise<PaginatedResponse<RequestLogResponse>> => {
     const params = new URLSearchParams();
 
     params.set("page", page.toString());

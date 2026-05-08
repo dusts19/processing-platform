@@ -1,5 +1,5 @@
 export type AnalyticsSummaryResponse = {
     totalRequests: number;
-    successRate: number;
+    successRatePercentage: number;
     avgLatencyMs: number;
 }

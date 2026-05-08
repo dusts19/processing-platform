@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { getRequestLogs } from "../api/requestLogApi"
 
 export const useRequestLogs = (page: number, status?: string, sort: string = "createdAt,desc") => {
@@ -11,6 +11,7 @@ export const useRequestLogs = (page: number, status?: string, sort: string = "cr
             status,
             sort,
         }),
+        placeholderData: keepPreviousData,
         // refetchInterval: 5000,
     })
 }

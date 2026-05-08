@@ -8,6 +8,7 @@ import Button from "../../../components/ui/Button";
 import { ErrorMessage } from "../../../components/shared/ErrorMessage";
 import { getErrorMessage } from "../../../components/shared/apiError";
 import { useCreateApiKey } from "../hooks/useCreateApiKey"
+import type { ApiKeyResponse } from "../types/apiKeyResponse";
 // import type { ApiKeyResponse } from "../types/apiKeyResponse";
 
 const CreateApiKeyCard = () => {
@@ -15,8 +16,8 @@ const CreateApiKeyCard = () => {
     
 
     const createMutation = useCreateApiKey({
-        onSuccess: (key: string) => {
-            setNewKey(key)
+        onSuccess: (data: ApiKeyResponse) => {
+            setNewKey(data.key)
         }
     });
 

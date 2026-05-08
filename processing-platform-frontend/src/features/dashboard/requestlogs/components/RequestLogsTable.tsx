@@ -86,29 +86,31 @@ export const RequestLogsTable = () => {
                             </span>
                         )}
                     </div>
-                    <Table headers={["Method", "Endpoint", "Status", "Latency", "Time"]}>
-                        {logs.map((log: RequestLogResponse) => (
-                            <tr  
-                                className="border-t hover:bg-gray-50" 
-                                key={log.id}
-                            >
-                                <td className="p-3 text-sm">{log.httpMethod}</td>
-                                <td className="p-3 text-sm">{log.endpoint}</td>
-                                <td className={`p-3 text-sm ${
-                                        log.statusCode >= 400 ? "text-red-500" : "text-green-600" 
-                                    }`}
+                    <div className="overflow-x-auto">
+                        <Table headers={["Method", "Endpoint", "Status", "Latency", "Time"]}>
+                            {logs.map((log: RequestLogResponse) => (
+                                <tr  
+                                    className="border-t hover:bg-gray-50" 
+                                    key={log.id}
                                 >
-                                    {log.statusCode} - {log.status}
-                                </td>
-                                <td className="p-3 text-sm">{log.latencyMs.toFixed(2)} ms</td>
-                                <td className="p-3 text-sm">
-                                    {log.createdAt
-                                    ? new Date(log.createdAt).toLocaleDateString()
-                                    : "---"}
-                                </td>
-                            </tr>
-                        ))}
-                    </Table>
+                                    <td className="p-3 text-sm">{log.httpMethod}</td>
+                                    <td className="p-3 text-sm">{log.endpoint}</td>
+                                    <td className={`p-3 text-sm ${
+                                            log.statusCode >= 400 ? "text-red-500" : "text-green-600" 
+                                        }`}
+                                    >
+                                        {log.statusCode} - {log.status}
+                                    </td>
+                                    <td className="p-3 text-sm">{log.latencyMs.toFixed(2)} ms</td>
+                                    <td className="p-3 text-sm">
+                                        {log.createdAt
+                                        ? new Date(log.createdAt).toLocaleDateString()
+                                        : "---"}
+                                    </td>
+                                </tr>
+                            ))}
+                        </Table>
+                    </div>
                 </>
             )}
             

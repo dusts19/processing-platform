@@ -14,6 +14,7 @@ export const SummaryCards = () => {
     //         avgLatencyMs: 0,
     //     },
     //     isLoading,
+    //     isError,
     //     error,
     // } = useAnalyticsSummary();
     const {
@@ -43,7 +44,12 @@ export const SummaryCards = () => {
     }
                         
 
-    const summary = data!;
+    // const summary = data!;
+    const summary = data ?? {
+            totalRequests: 0,
+            successRatePercentage: 0,
+            avgLatencyMs: 0,
+        }
 
     return (
         <Card title="Summary">
@@ -55,7 +61,7 @@ export const SummaryCards = () => {
                 </div>
                 <div>
                     <p>Success Rate:</p>
-                    <p>{summary.successRate} %</p>
+                    <p>{summary.successRatePercentage} %</p>
                 </div>
                 <div>
                     <p>Avg Latency:</p>

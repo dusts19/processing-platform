@@ -1,6 +1,6 @@
 
 export type AnalyticsTimeseriesResponse = {
-    seriesDate: Date;
+    seriesDate: string;
     requestCount: number;
     successCount: number;
     avgLatency: number;
