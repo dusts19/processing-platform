@@ -1,4 +1,4 @@
-package com.dustin.processingplatformbackend.common.exception;
+package com.dustin.processingplatformbackend.common.response;
 
 public record ApiError(
     String message,
